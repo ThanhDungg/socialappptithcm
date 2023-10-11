@@ -1,0 +1,15 @@
+.story {
+   width: 137.56px;
+   height: 177.14px;
+   border-radius: 2px;
+   cursor: pointer;
+
+   &:hover {
+      opacity: 0.8;
+   }
+}
+
+.container-story {
+   width: 660px;
+   text-wrap: wrap;
+}
