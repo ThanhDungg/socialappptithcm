@@ -1,6 +1,17 @@
+import { useState } from 'react';
 import * as Icon from 'react-bootstrap-icons';
 
 function EditProfile() {
+   const [Alt, setAlt] = useState();
+
+   const chooseFile = (input) => {
+      const file = input.target.files[0];
+
+      file.preview = URL.createObjectURL(file);
+
+      setAlt(file);
+   };
+
    return (
       <div class="container bootstrap snippets bootdeys">
          <div class="row">
@@ -9,13 +20,14 @@ function EditProfile() {
                   <div class="panel panel-default">
                      <div class="panel-body text-center">
                         <img
-                           src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                           class="img-circle profile-avatar rounded-circle"
+                           src={Alt ? Alt.preview : 'https://bootdey.com/img/Content/avatar/avatar6.png'}
+                           class="card-img rounded-circle"
+                           style={{ width: '40%' }}
                            alt="User avatar"
                         />
                         <div>
                            <label for="input-info-img">
-                              <input type="file" id="input-info-img" hidden />
+                              <input type="file" id="input-info-img" hidden onChange={chooseFile} />
                               <Icon.Image />
                            </label>
                         </div>
@@ -28,24 +40,18 @@ function EditProfile() {
                      </div>
                      <div class="panel-body">
                         <div class="form-group">
-                           <label class="col-sm-2 control-label">User name</label>
+                           <label class="col-sm-2 control-label">First name</label>
                            <div class="col-sm-10">
-                              <input type="tel" class="form-control" placeholder="User name..." />
+                              <input type="tel" class="form-control" placeholder="First name..." />
                            </div>
                         </div>
                         <div class="form-group">
-                           <label class="col-sm-2 control-label">Phone number</label>
+                           <label class="col-sm-2 control-label">Last name</label>
                            <div class="col-sm-10">
-                              <input type="tel" class="form-control" placeholder="Phone number..." />
+                              <input type="tel" class="form-control" placeholder="Last name..." />
                            </div>
                         </div>
-
-                        <div class="form-group">
-                           <label class="col-sm-2 control-label">Description</label>
-                           <div class="col-sm-10">
-                              <textarea rows="3" class="form-control" placeholder="Description..."></textarea>
-                           </div>
-                        </div>
+                        
                         <div class="form-group">
                            <div class="col-sm-10 col-sm-offset-2">
                               <button type="submit" class="btn btn-primary">

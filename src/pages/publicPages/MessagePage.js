@@ -1,7 +1,17 @@
+import { useEffect } from 'react';
 import MessagePageComponent from '../../Layout/MessagePageComponent';
 import SideBar from '../../Layout/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 function MessagePage() {
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      if (localStorage.getItem('accessToken')) {
+      } else {
+         navigate('/');
+      }
+   }, []);
    return (
       <div>
          <div class="container">

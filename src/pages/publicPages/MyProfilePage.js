@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import MyProfile from '../../Layout/MyProfile';
 import SideBar from '../../Layout/Sidebar';
+import { useEffect } from 'react';
 
 function MyProfilePage() {
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      if (localStorage.getItem('accessToken')) {
+      } else {
+         navigate('/');
+      }
+   }, []);
    return (
       <div>
          <div class="container">

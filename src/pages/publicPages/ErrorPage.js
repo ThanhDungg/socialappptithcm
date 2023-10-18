@@ -12,7 +12,7 @@ function ErrorPage() {
             type="submit"
             class="btn btn-primary"
             onClick={() => {
-               navigate(-1);
+               navigate('/');
             }}
          >
             back

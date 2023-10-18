@@ -1,6 +1,6 @@
 import Input from '../../components/Input';
 
-function FormRegisAccount() {
+function FormRegisAccount({ handleRegister, onChange }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
@@ -13,6 +13,9 @@ function FormRegisAccount() {
             title={'First Name'}
             placeholder={'Your first name'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
          <Input
             id={'regis-last-name'}
@@ -20,6 +23,9 @@ function FormRegisAccount() {
             title={'Last Name'}
             placeholder={'Your last name'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
          <Input
             id={'regis-password'}
@@ -27,6 +33,9 @@ function FormRegisAccount() {
             title={'PassWord'}
             placeholder={'Your password'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
          <Input
             id={'regis-repassword'}
@@ -34,16 +43,19 @@ function FormRegisAccount() {
             title={'RePassWord'}
             placeholder={'Re password'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
 
-         <div id="error-regis-account" class="text-danger font-italic" style={{ fontStyle: 'italic' }}></div>
+         <div id="error-regis-account" class="text-danger fst-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
             <button
                type="button"
                class="btn btn-primary btn-lg"
                // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-               onClick={() => {}}
+               onClick={handleRegister}
             >
                Regist
             </button>

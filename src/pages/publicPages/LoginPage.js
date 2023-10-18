@@ -1,13 +1,41 @@
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import Footer from '../../Layout/Footer';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import Input from '../../components/Input';
+import { login_Url, postData } from '../../config/fetchData';
+import { PublicData } from '../../App';
 
 function LoginPage() {
    const navigate = useNavigate();
 
-   const handleLogin = () => {
-      navigate('/home');
+   const handleLogin = async () => {
+      if (document.getElementById('login-email').value == '') {
+         document.getElementById('error-login').innerText = 'Number phone is empty...';
+      } else if (document.getElementById('login-password').value == '') {
+         document.getElementById('error-login').innerText = 'Password is empty...';
+      } else {
+         try {
+            await postData(
+               login_Url,
+               {
+                  email: document.getElementById('login-email').value,
+                  password: document.getElementById('login-password').value,
+               },
+               '',
+            ).then((res) => {
+               if (res.data.code == 202) {
+                  localStorage.setItem('accessToken', res.data.result.token);
+                  navigate('/home');
+               } else {
+                  document.getElementById('error-login').innerText = res.data.message;
+               }
+            });
+         } catch (e) {}
+      }
+   };
+
+   const onChangeInput = () => {
+      document.getElementById('error-login').innerText = '';
    };
 
    return (
@@ -30,8 +58,15 @@ function LoginPage() {
                      <Input
                         id={'login-email'}
                         type={'email'}
-                        title={'Email Address'}
-                        placeholder={'Enter valid email'}
+                        title={'Number phone'}
+                        placeholder={'Enter valid number phone'}
+                        onChange={onChangeInput}
+                        onKeyPress={(event) => {
+                           // if (!/[0-9]/.test(event.key)) {
+                           //    event.preventDefault();
+                           // }
+                        }}
+                        // maxLength={10}
                      />
 
                      <Input
@@ -39,6 +74,7 @@ function LoginPage() {
                         type={'password'}
                         title={'Password'}
                         placeholder={'Enter valid password'}
+                        onChange={onChangeInput}
                      />
 
                      <div class="d-flex justify-content-between align-items-center">
@@ -47,6 +83,8 @@ function LoginPage() {
                            Forgot password?
                         </Link>
                      </div>
+
+                     <div class="text-danger fst-italic" id="error-login"></div>
 
                      <div class="text-center text-lg-start mt-4 pt-2">
                         <button

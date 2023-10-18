@@ -1,7 +1,17 @@
+import { useEffect } from 'react';
 import EditProfile from '../../Layout/EditProfile';
 import SideBar from '../../Layout/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 function EditProfilePage() {
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      if (localStorage.getItem('accessToken')) {
+      } else {
+         navigate('/');
+      }
+   }, []);
    return (
       <div>
          <div class="container">

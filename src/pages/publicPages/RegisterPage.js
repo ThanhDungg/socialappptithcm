@@ -16,11 +16,49 @@ function RegisterPage() {
    };
 
    const handleSendOTP = () => {
-      handleClick(setFormOtp, setFormPhone, setFormRegis);
+      if (document.getElementById('regis-phone').value == '') {
+         document.getElementById('error-regis-phone').innerText = 'Number phone is empty...';
+      } else if (document.getElementById('regis-phone').value.length < 10) {
+         document.getElementById('error-regis-phone').innerText = 'Number phone must 10 number...';
+      } else {
+         handleClick(setFormOtp, setFormPhone, setFormRegis);
+      }
+   };
+
+   const onChangeSendOTP = () => {
+      document.getElementById('error-regis-phone').innerText = '';
    };
 
    const handleNextAccount = () => {
-      handleClick(setFormRegis, setFormPhone, setFormOtp);
+      if (document.getElementById('regis-otp').value == '') {
+         document.getElementById('error-regis-otp').innerText = 'OTP is empty...';
+      } else if (document.getElementById('regis-otp').value.length < 6) {
+         document.getElementById('error-regis-otp').innerText = 'OTP must 6 number...';
+      } else {
+         handleClick(setFormRegis, setFormPhone, setFormOtp);
+      }
+   };
+
+   const onChangeNextAccount = () => {
+      document.getElementById('error-regis-otp').innerText = '';
+   };
+
+   const handleRegister = () => {
+      if (document.getElementById('regis-first-name').value == '') {
+         document.getElementById('error-regis-account').innerText = 'First name is empty...';
+      } else if (document.getElementById('regis-last-name').value == '') {
+         document.getElementById('error-regis-account').innerText = 'Last name is empty...';
+      } else if (document.getElementById('regis-password').value == '') {
+         document.getElementById('error-regis-account').innerText = 'Password is empty...';
+      } else if (document.getElementById('regis-repassword').value == '') {
+         document.getElementById('error-regis-account').innerText = 'RePassword is empty...';
+      } else if (document.getElementById('regis-repassword').value != document.getElementById('regis-password').value) {
+         document.getElementById('error-regis-account').innerText = 'RePassword not match Password...';
+      }
+   };
+
+   const onChangeRegis = () => {
+      document.getElementById('error-regis-account').innerText = '';
    };
 
    return (
@@ -35,9 +73,9 @@ function RegisterPage() {
                   />
                </div>
                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                  {formPhone && <FormRegisPhone handleSendOTP={handleSendOTP} />}
-                  {formOtp && <FormRegisOTP handleNextAccount={handleNextAccount} />}
-                  {formRegis && <FormRegisAccount />}
+                  {formPhone && <FormRegisPhone handleSendOTP={handleSendOTP} onChange={onChangeSendOTP} />}
+                  {formOtp && <FormRegisOTP handleNextAccount={handleNextAccount} onChange={onChangeNextAccount} />}
+                  {formRegis && <FormRegisAccount handleRegister={handleRegister} onChange={onChangeRegis} />}
                </div>
             </div>
          </div>

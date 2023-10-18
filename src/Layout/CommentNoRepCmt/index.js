@@ -1,9 +1,9 @@
 import Comment from '../../components/Comment';
 
-function CommentNoRepCmt() {
+function CommentNoRepCmt({ comment, post }) {
    return (
       <li class="comment-item">
-         <Comment />
+         <Comment comment={comment} post={post} />
       </li>
    );
 }

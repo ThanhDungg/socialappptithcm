@@ -1,13 +1,27 @@
 import Input from '../../components/Input';
 
-function FormRegisOTP({ handleNextAccount }) {
+function FormRegisOTP({ handleNextAccount, onChange }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0">Forgot password</p>
          </div>
 
-         <Input id={'regis-phone'} type={'text'} title={'OTP'} placeholder={'Enter valid OTP'} maxLength={6} />
+         <Input
+            id={'regis-otp'}
+            type={'text'}
+            title={'OTP'}
+            placeholder={'Enter valid OTP'}
+            maxLength={6}
+            onKeyPress={(event) => {
+               if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+               }
+            }}
+            onChange={() => {
+               onChange();
+            }}
+         />
 
          {/* <div class="d-flex justify-content-between align-items-center">
             <div class="form-check mb-0"></div>

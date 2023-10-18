@@ -1,6 +1,6 @@
 import Input from '../../components/Input';
 
-function FormRegisPhone({ handleSendOTP }) {
+function FormRegisPhone({ handleSendOTP, onChange }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
@@ -13,6 +13,14 @@ function FormRegisPhone({ handleSendOTP }) {
             title={'Phone number'}
             placeholder={'Enter valid phone number'}
             maxLength={10}
+            onKeyPress={(event) => {
+               if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+               }
+            }}
+            onChange={() => {
+               onChange();
+            }}
          />
 
          {/* <div class="d-flex justify-content-between align-items-center">
@@ -21,7 +29,7 @@ function FormRegisPhone({ handleSendOTP }) {
                Forgot password?
             </a>
          </div> */}
-         <div id="error-regis-phone" class="text-danger font-italic" style={{ fontStyle: 'italic' }}></div>
+         <div id="error-regis-phone" class="text-danger fst-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
             <button

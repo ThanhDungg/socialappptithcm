@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import OrtherProfile from '../../Layout/OrtherProfile';
 import SideBar from '../../Layout/Sidebar';
+import { useEffect } from 'react';
 
 function OrtherProfilePage() {
+   const navigate = useNavigate();
+
+   useEffect(() => {
+      if (localStorage.getItem('accessToken')) {
+      } else {
+         navigate('/');
+      }
+   }, []);
    return (
       <div>
          <div class="container">

@@ -1,12 +1,20 @@
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { publicsRoutes } from './routes';
 import DefaultLayout from './Layout/DefaultLayout';
-import { Fragment } from 'react';
+import { Fragment, createContext, useState } from 'react';
+import { src } from './config';
 
 function App() {
    return (
       <BrowserRouter>
-         <div className="App">
+         <div
+            className="App"
+            // style={{
+            //    backgroundImage: `url(${src})`,
+            //    backgroundRepeat: 'no-repeat',
+            //    backgroundSize: 'cover',
+            // }}
+         >
             <Routes>
                {publicsRoutes.map((route, index) => {
                   const Page = route.component;

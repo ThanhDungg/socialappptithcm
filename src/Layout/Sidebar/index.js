@@ -1,14 +1,44 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import classNames from 'classnames/bind';
 import style from './Sidebar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faBookBookmark, faBookmark, faHome, faMessage } from '@fortawesome/free-solid-svg-icons';
+import {
+   faBell,
+   faBookBookmark,
+   faBookmark,
+   faGear,
+   faHome,
+   faMessage,
+   faPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import Popur from '../../components/Popur';
 
 const cx = classNames.bind(style);
 
 function SideBar() {
    const src = 'https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien.jpeg';
+
+   const navigate = useNavigate();
+
+   const [Alt, setAlt] = useState();
+
+   const chooseFile = (input) => {
+      const file = input.target.files[0];
+
+      file.preview = URL.createObjectURL(file);
+
+      setAlt(file);
+   };
+
+   const handleLogOut = async () => {
+      try {
+         await localStorage.removeItem('accessToken');
+         await navigate('/');
+         await window.location.reload();
+      } catch (e) {}
+   };
 
    return (
       <nav class="navbar navbar-expand-lg mx-0">
@@ -40,47 +70,42 @@ function SideBar() {
                               <span>Message</span>
                            </Link>
                         </li>
-                        <li class="nav-item  btn btn-light text-start">
+                        <li
+                           class="nav-item  btn btn-light text-start"
+                           data-bs-target="#exampleModal"
+                           data-bs-toggle="modal"
+                        >
                            <Link class="nav-link text-muted">
-                              <FontAwesomeIcon className={cx('icon')} icon={faBookmark} />
-                              <span>Bookmarks</span>
+                              <FontAwesomeIcon className={cx('icon')} icon={faPlus} />
+                              <span>Create Story</span>
+                           </Link>
+                        </li>
+                        <li class="nav-item  btn btn-light text-start" data-bs-target="#logout" data-bs-toggle="modal">
+                           <Link class="nav-link text-muted">
+                              <FontAwesomeIcon className={cx('icon')} icon={faGear} />
+                              <span>Log out</span>
                            </Link>
                         </li>
                      </ul>
                   </div>
                </div>
 
-               <ul class="nav small mt-4 justify-content-center lh-1">
-                  <li class="nav-item">
-                     <Link class="nav-link">About</Link>
-                  </li>
-                  <li class="nav-item">
-                     <Link class="nav-link">Settings</Link>
-                  </li>
-                  <li class="nav-item">
-                     <Link class="nav-link" target="_blank">
-                        Support{' '}
-                     </Link>
-                  </li>
-                  <li class="nav-item">
-                     <Link class="nav-link" target="_blank">
-                        Docs{' '}
-                     </Link>
-                  </li>
-                  <li class="nav-item">
-                     <Link class="nav-link">Help</Link>
-                  </li>
-                  <li class="nav-item">
-                     <Link class="nav-link">Privacy &amp; terms</Link>
-                  </li>
-               </ul>
-               <p class="small text-center mt-1">
-                  ©2023{' '}
-                  <Link class="text-body" target="_blank">
-                     {' '}
-                     Webestica{' '}
-                  </Link>
-               </p>
+               <Popur
+                  id={'exampleModal'}
+                  title={'Create story'}
+                  chooseFile={chooseFile}
+                  Alt={Alt}
+                  titleBtn={'Post story'}
+               />
+
+               <Popur
+                  id={'logout'}
+                  title={'Logout'}
+                  createStory={false}
+                  titleBody={'Do you want logout?'}
+                  titleBtn={'Log out'}
+                  onClick={handleLogOut}
+               />
             </div>
          </div>
       </nav>

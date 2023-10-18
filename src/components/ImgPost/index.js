@@ -16,7 +16,7 @@ function PostImg({ listImg1 = listImg }) {
                            <div class="col-md-3">
                               <div class="">
                                  <div class="">
-                                    <img src={item.src} className={cx('img-post')} />
+                                    <img src={item.IMAGE} className={cx('img-post')} />
                                  </div>
                               </div>
                            </div>
