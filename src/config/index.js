@@ -12,7 +12,7 @@ export const countDate = (post, id) => {
    if (toDay.getFullYear() - date.getFullYear() == 0) {
       if (toDay.getMonth() - date.getMonth() == 0) {
          if (toDay.getDate() - date.getDate() == 0) {
-            if (toDay.getHours() - date.getHours() == 0) {
+            if (toDay.getHours() - date.getHours() <= 0) {
                document.getElementById(id).innerText = '1hr';
             } else {
                document.getElementById(id).innerText = toDay.getHours() - date.getHours() + 'hr';
@@ -25,5 +25,32 @@ export const countDate = (post, id) => {
       }
    } else {
       document.getElementById(id).innerText = date.getFullYear() + 'y';
+   }
+};
+
+export const setTime = (time) => {
+   const date = new Date(time);
+   const toDay = new Date();
+
+   if (toDay.getFullYear() - date.getFullYear() == 0) {
+      if (toDay.getMonth() - date.getMonth() == 0) {
+         if (toDay.getDate() - date.getDate() == 0) {
+            if (toDay.getHours() - date.getHours() <= 0) {
+               if (toDay.getMinutes() - date.getMinutes() == 0) {
+                  return '1 minutes ago';
+               } else {
+                  return toDay.getMinutes() - date.getMinutes() + ' minutes ago';
+               }
+            } else {
+               return toDay.getHours() - date.getHours() + ' hr ago';
+            }
+         } else {
+            return toDay.getDate() - date.getDate() + ' day ago';
+         }
+      } else {
+         return toDay.getMonth() - date.getMonth() + ' month ago';
+      }
+   } else {
+      return date.getFullYear() + ' years ago';
    }
 };

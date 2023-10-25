@@ -50,7 +50,7 @@ function HomePage() {
             </div>
 
             <div class="col-md-8 col-lg-6 vstack gap-4 w-50">
-               <Story />
+               {/* <Story /> */}
                <CreatePost />
                {listPost.length == 0
                   ? ''

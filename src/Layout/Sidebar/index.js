@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import Popur from '../../components/Popur';
+import { getData, getUser } from '../../config/fetchData';
 
 const cx = classNames.bind(style);
 
@@ -35,10 +36,28 @@ function SideBar() {
    const handleLogOut = async () => {
       try {
          await localStorage.removeItem('accessToken');
+         await localStorage.removeItem('id');
          await navigate('/');
          await window.location.reload();
       } catch (e) {}
    };
+
+   useEffect(() => {
+      try {
+         const getDataUser = async () => {
+            await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
+               (res) => {
+                  console.log(res);
+                  document.getElementById('sidebar-fullname').innerText = res.data.result.user.FULLNAME;
+                  document.getElementById('sidebar-img').src = res.data.result.user.AVATAR;
+               },
+            );
+         };
+         getDataUser();
+      } catch (e) {
+         console.log(e);
+      }
+   }, []);
 
    return (
       <nav class="navbar navbar-expand-lg mx-0">
@@ -49,7 +68,8 @@ function SideBar() {
                      <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                         <li class="nav-item btn btn-light text-start">
                            <Link class=" nav-link text-muted text-decoration-none" to={`/myprofile`}>
-                              <img src={src} className={cx('avatar')} /> Dũng
+                              <img id="sidebar-img" src={''} className={cx('avatar')} />{' '}
+                              <span id="sidebar-fullname"></span>
                            </Link>
                         </li>
                         <li class="nav-item  btn btn-light text-start">
@@ -65,7 +85,7 @@ function SideBar() {
                            </Link>
                         </li>
                         <li class="nav-item  btn btn-light text-start">
-                           <Link class="nav-link text-muted" to={`/message/0`}>
+                           <Link class="nav-link text-muted" to={`/message/0/0`}>
                               <FontAwesomeIcon className={cx('icon')} icon={faMessage} />
                               <span>Message</span>
                            </Link>

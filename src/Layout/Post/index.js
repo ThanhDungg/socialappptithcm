@@ -60,6 +60,7 @@ function Post({ post }) {
       try {
          await getData(getComment + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
             if (res.data.code == 200) {
+               console.log(res);
                if (res.data.result.comments.length != 0) {
                   setListCmt(res.data.result.comments);
                }
@@ -70,7 +71,7 @@ function Post({ post }) {
    };
 
    const handleComment = async () => {
-      if (document.getElementById(`par-comment-input-${post.ID}`).value == '') {
+      if (document.getElementById(`par-comment-input-${post.ID}`).value.trim() == '') {
          return;
       } else {
          try {
@@ -81,8 +82,20 @@ function Post({ post }) {
                   content: document.getElementById(`par-comment-input-${post.ID}`).value,
                },
                localStorage.getItem('accessToken'),
-            ).then((res) => {
-               console.log(res);
+            ).then(async (res) => {
+               if (res.data.code == 201) {
+                  try {
+                     document.getElementById(`par-comment-input-${post.ID}`).value = '';
+                     await getData(getComment + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
+                        if (res.data.code == 200) {
+                           console.log(res);
+                           if (res.data.result.comments.length != 0) {
+                              setListCmt(res.data.result.comments);
+                           }
+                        }
+                     });
+                  } catch (e) {}
+               }
             });
          } catch (e) {}
       }
@@ -122,11 +135,12 @@ function Post({ post }) {
                ? listCmt.length == 0
                   ? ''
                   : listCmt.map((cmt) => {
-                       if (cmt.COMMENTs.length == 0) {
-                          return <CommentNoRepCmt comment={cmt} />;
-                       } else {
-                          return <CommentHasRepCmt comment={cmt} />;
-                       }
+                       return <CommentHasRepCmt comment={cmt} post={post} />;
+                       //   if (cmt.COMMENTs.length == 0) {
+                       //      return <CommentNoRepCmt comment={cmt} post={post} />;
+                       //   } else {
+                       //      return <CommentHasRepCmt comment={cmt} post={post} />;
+                       //   }
                     })
                : ''}
          </div>

@@ -3,7 +3,7 @@ import PostImg from '../../components/ImgPost';
 import { useEffect, useState } from 'react';
 import { BASE_URL } from '../../config/fetchData';
 
-function CreatePost() {
+function CreatePost({ setState }) {
    const [imgInput, setImgInput] = useState([]);
    const [listImg, setListImg] = useState([]);
 
@@ -11,17 +11,23 @@ function CreatePost() {
       const f = Object.values(file.target.files);
       setListImg(f);
       f.map((item) => {
-         setImgInput((list) => [...list, { src: URL.createObjectURL(item) }]);
+         setImgInput((list) => [...list, { IMAGE: URL.createObjectURL(item) }]);
       });
    };
 
    const handlePost = async () => {
+      if (listImg.length == 0 && document.getElementById('input-caption').value.trim() == '') {
+         alert('Caption and image is empty...');
+         return;
+      }
       console.log(listImg);
       let formData = new FormData();
       await formData.append('caption', document.getElementById('input-caption').value);
       // console.log(tempImg);
-      for (let i = 0; i < listImg.length; i++) {
-         await formData.append('file', listImg[i]);
+      if (listImg.length != 0) {
+         for (let i = 0; i < listImg.length; i++) {
+            await formData.append('file', listImg[i]);
+         }
       }
       await fetch(`${BASE_URL}api/post`, {
          method: 'POST',
@@ -31,11 +37,12 @@ function CreatePost() {
          },
       })
          .then((json) => json.json())
-         .then((res) => {
+         .then(async (res) => {
             console.log(res);
             if (res.code == 201) {
                // window.location.reload();
                alert('Thành công');
+               setState((state) => state + 1);
             } else {
                alert('That bai');
             }

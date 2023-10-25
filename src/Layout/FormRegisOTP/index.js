@@ -1,10 +1,11 @@
 import Input from '../../components/Input';
+import LoadingBtn from '../../components/LoadingBtn';
 
-function FormRegisOTP({ handleNextAccount, onChange }) {
+function FormRegisOTP({ handleNextAccount, onChange, loadingBtn }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0">Forgot password</p>
+            <p class="text-center fw-bold mx-3 mb-0">Register</p>
          </div>
 
          <Input
@@ -32,14 +33,18 @@ function FormRegisOTP({ handleNextAccount, onChange }) {
          <div id="error-regis-otp" class="text-danger font-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
-            <button
-               type="button"
-               class="btn btn-primary btn-lg"
-               // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-               onClick={handleNextAccount}
-            >
-               Next
-            </button>
+            {!loadingBtn ? (
+               <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  // style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                  onClick={handleNextAccount}
+               >
+                  Next
+               </button>
+            ) : (
+               <LoadingBtn />
+            )}
             {/* <p class="small fw-bold mt-2 pt-1 mb-0">
                Don't have an account?{' '}
                <a href="#!" class="link-danger">

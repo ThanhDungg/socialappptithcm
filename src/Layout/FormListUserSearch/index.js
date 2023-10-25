@@ -1,6 +1,6 @@
 import User from '../../components/User';
 
-function FormListUserSearch() {
+function FormListUserSearch({ listUser }) {
    return (
       <div class="container ">
          <div class="position-absolute" style={{ zIndex: 2 }}>
@@ -11,8 +11,12 @@ function FormListUserSearch() {
                      <div class="badge badge-rounded bg-green">4 New </div>
                   </div> */}
                   <div class="card-body p-1 bg-light">
-                     <User />
-                     <User />
+                     {listUser.length == 0
+                        ? ''
+                        : listUser.map((user) => {
+                             return <User user={user} />;
+                          })}
+
                      {/* <div class="btn btn-light d-flex align-items-center">
                         <div class="image">
                            <img

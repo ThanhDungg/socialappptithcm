@@ -1,6 +1,7 @@
 import Input from '../../components/Input';
+import LoadingBtn from '../../components/LoadingBtn';
 
-function FormForgotPassword() {
+function FormForgotPassword({ handleChangePassword, onChange, loadingBtn }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
@@ -12,6 +13,9 @@ function FormForgotPassword() {
             title={'PassWord'}
             placeholder={'Your password'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
          <Input
             id={'regis-repassword'}
@@ -19,19 +23,28 @@ function FormForgotPassword() {
             title={'RePassWord'}
             placeholder={'Re password'}
             maxLength={100}
+            onChange={() => {
+               onChange();
+            }}
          />
 
          <div id="error-regis-account" class="text-danger font-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
-            <button
-               type="button"
-               class="btn btn-primary btn-lg"
-               // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-               onClick={() => {}}
-            >
-               Change password
-            </button>
+            {!loadingBtn ? (
+               <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  // style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                  onClick={() => {
+                     handleChangePassword();
+                  }}
+               >
+                  Change password
+               </button>
+            ) : (
+               <LoadingBtn />
+            )}
          </div>
       </form>
    );

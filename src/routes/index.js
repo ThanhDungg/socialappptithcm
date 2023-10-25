@@ -10,9 +10,9 @@ import OrtherProfilePage from '../pages/publicPages/OrtherProfilePage';
 import RegisterPage from '../pages/publicPages/RegisterPage';
 
 const publicsRoutes = [
-   { path: '/', redirect: '/home', component: LoginPage, Layout: LoginPage },
+   { path: '/', component: LoginPage, Layout: LoginPage },
    { path: '/home', component: HomePage, Layout: HomePage },
-   { path: '/message/:id', component: MessagePage, Layout: MessagePage },
+   { path: '/message/:idConver/:idUser', component: MessagePage, Layout: MessagePage },
    { path: '/notification', component: NotificationPage, Layout: NotificationPage },
    { path: '/myprofile', component: MyProfilePage, Layout: MyProfilePage },
    { path: '/register', component: RegisterPage, Layout: RegisterPage },

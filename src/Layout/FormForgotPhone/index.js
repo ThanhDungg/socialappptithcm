@@ -1,7 +1,8 @@
 import BtnLoading from '../../components/BtnLoading';
 import Input from '../../components/Input';
+import LoadingBtn from '../../components/LoadingBtn';
 
-function FormForgotPhone({ handleForgotSendOTP }) {
+function FormForgotPhone({ handleForgotSendOTP, onChange, loadingBtn }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
@@ -11,9 +12,11 @@ function FormForgotPhone({ handleForgotSendOTP }) {
          <Input
             id={'forgot-phone'}
             type={'text'}
-            title={'Phone number'}
-            placeholder={'Enter valid phone number'}
-            maxLength={10}
+            title={'Email'}
+            placeholder={'Enter valid email'}
+            onChange={() => {
+               onChange();
+            }}
          />
 
          {/* <div class="d-flex justify-content-between align-items-center">
@@ -25,14 +28,18 @@ function FormForgotPhone({ handleForgotSendOTP }) {
          <div id="error-forgot-phone" class="text-danger font-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
-            <button
-               type="button"
-               class="btn btn-primary btn-lg"
-               // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-               onClick={handleForgotSendOTP}
-            >
-               Send OTP
-            </button>
+            {!loadingBtn ? (
+               <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  // style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                  onClick={handleForgotSendOTP}
+               >
+                  Send OTP
+               </button>
+            ) : (
+               <LoadingBtn />
+            )}
             {/* <BtnLoading /> */}
             {/* <p class="small fw-bold mt-2 pt-1 mb-0">
                Don't have an account?{' '}

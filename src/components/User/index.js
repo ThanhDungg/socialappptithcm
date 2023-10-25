@@ -4,17 +4,19 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(style);
 
-function User() {
+function User({ user }) {
    const src = 'https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien.jpeg';
+   console.log(user);
 
    return (
-      <Link class="text-decoration-none" to={'/profile/0'}>
-         <div class="hstack gap-2 mb-3  btn btn-light bg-image" style={{ backgroundImage: `url(${src})` }}>
+      <Link class="text-decoration-none " to={`/profile/${user.ID}`}>
+         <div class="hstack gap-2 mb-3  btn btn-light bg-image border">
             <div class="avatar">
-               <img class="avatar-img" className={cx('avatar-img')} src={src} alt="" />
+               <img class="avatar-img" className={cx('avatar-img')} src={!user ? src : user.AVATAR} alt="" />
             </div>
             <div class="overflow-hidden">
-               Judy Nguyen <p class="mb-0 small text-truncate">News anchor</p>
+               {!user ? '' : user.FULLNAME}{' '}
+               <p class="mb-0 small text-truncate text-start">{!user ? '' : user.USERNAME}</p>
             </div>
          </div>
       </Link>

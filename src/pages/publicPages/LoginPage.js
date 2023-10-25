@@ -1,20 +1,24 @@
 import { Link, redirect, useNavigate } from 'react-router-dom';
 import Footer from '../../Layout/Footer';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Input from '../../components/Input';
 import { login_Url, postData } from '../../config/fetchData';
 import { PublicData } from '../../App';
+import LoadingBtn from '../../components/LoadingBtn';
 
 function LoginPage() {
    const navigate = useNavigate();
 
+   const [loadingBtn, setLoadingBtn] = useState(false);
+
    const handleLogin = async () => {
       if (document.getElementById('login-email').value == '') {
-         document.getElementById('error-login').innerText = 'Number phone is empty...';
+         document.getElementById('error-login').innerText = 'UserName is empty...';
       } else if (document.getElementById('login-password').value == '') {
          document.getElementById('error-login').innerText = 'Password is empty...';
       } else {
          try {
+            setLoadingBtn(true);
             await postData(
                login_Url,
                {
@@ -22,12 +26,15 @@ function LoginPage() {
                   password: document.getElementById('login-password').value,
                },
                '',
-            ).then((res) => {
+            ).then(async (res) => {
                if (res.data.code == 202) {
                   localStorage.setItem('accessToken', res.data.result.token);
-                  navigate('/home');
+                  localStorage.setItem('id', res.data.result.user.ID);
+                  await navigate('/home');
+                  await window.location.reload();
                } else {
                   document.getElementById('error-login').innerText = res.data.message;
+                  setLoadingBtn(false);
                }
             });
          } catch (e) {}
@@ -87,14 +94,18 @@ function LoginPage() {
                      <div class="text-danger fst-italic" id="error-login"></div>
 
                      <div class="text-center text-lg-start mt-4 pt-2">
-                        <button
-                           type="button"
-                           class="btn btn-primary btn-lg"
-                           // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-                           onClick={handleLogin}
-                        >
-                           Login
-                        </button>
+                        {!loadingBtn ? (
+                           <button
+                              type="button"
+                              class="btn btn-primary btn-lg"
+                              // style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                              onClick={handleLogin}
+                           >
+                              Login
+                           </button>
+                        ) : (
+                           <LoadingBtn />
+                        )}
                         <p class="small fw-bold mt-2 pt-1 mb-0">
                            Don't have an account?{' '}
                            <Link to={'/register'} class="link-danger">

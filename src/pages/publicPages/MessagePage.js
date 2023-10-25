@@ -1,13 +1,30 @@
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import MessagePageComponent from '../../Layout/MessagePageComponent';
 import SideBar from '../../Layout/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import { getConversation, getData } from '../../config/fetchData';
+import { User } from '../../App';
 
 function MessagePage() {
    const navigate = useNavigate();
 
+   const [listConversation, setlistConversation] = useState([]);
+
    useEffect(() => {
+      const getConversationList = async () => {
+         await getData(getConversation, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
+            if (res.data.code == 200) {
+               setlistConversation(res.data.result.conversations);
+            }
+         });
+      };
       if (localStorage.getItem('accessToken')) {
+         try {
+            getConversationList();
+         } catch (e) {
+            console.log(e);
+         }
       } else {
          navigate('/');
       }
@@ -34,7 +51,7 @@ function MessagePage() {
                </div>
 
                <div class="col-md-8 col-lg-6 vstack gap-4 w-50">
-                  <MessagePageComponent />
+                  <MessagePageComponent listConver={listConversation} />
                </div>
             </div>
          </div>

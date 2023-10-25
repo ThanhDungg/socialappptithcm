@@ -16,7 +16,12 @@ function AddCmt({ placeholder = 'Add a comment...', onClick, id }) {
                class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0"
                type="button"
             >
-               <FontAwesomeIcon icon={faPaperPlane} onClick={onClick} />
+               <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  onClick={() => {
+                     onClick();
+                  }}
+               />
             </button>
          </form>
       </div>

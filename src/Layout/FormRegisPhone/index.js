@@ -1,6 +1,7 @@
 import Input from '../../components/Input';
+import LoadingBtn from '../../components/LoadingBtn';
 
-function FormRegisPhone({ handleSendOTP, onChange }) {
+function FormRegisPhone({ handleSendOTP, onChange, loadingBtn }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
@@ -10,14 +11,9 @@ function FormRegisPhone({ handleSendOTP, onChange }) {
          <Input
             id={'regis-phone'}
             type={'text'}
-            title={'Phone number'}
-            placeholder={'Enter valid phone number'}
-            maxLength={10}
-            onKeyPress={(event) => {
-               if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-               }
-            }}
+            title={'Email'}
+            placeholder={'Enter valid email'}
+            onKeyPress={(event) => {}}
             onChange={() => {
                onChange();
             }}
@@ -32,14 +28,18 @@ function FormRegisPhone({ handleSendOTP, onChange }) {
          <div id="error-regis-phone" class="text-danger fst-italic" style={{ fontStyle: 'italic' }}></div>
 
          <div class="text-center text-lg-start mt-4 pt-2">
-            <button
-               type="button"
-               class="btn btn-primary btn-lg"
-               // style="padding-left: 2.5rem; padding-right: 2.5rem;"
-               onClick={handleSendOTP}
-            >
-               Send OTP
-            </button>
+            {!loadingBtn ? (
+               <button
+                  type="button"
+                  class="btn btn-primary btn-lg"
+                  // style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                  onClick={handleSendOTP}
+               >
+                  Send OTP
+               </button>
+            ) : (
+               <LoadingBtn />
+            )}
             {/* <p class="small fw-bold mt-2 pt-1 mb-0">
                Don't have an account?{' '}
                <a href="#!" class="link-danger">

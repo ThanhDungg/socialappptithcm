@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import AddCmt from '../AddCmt';
 import { postComment, postData } from '../../config/fetchData';
 
-function Comment({ comment, post }) {
+function CommentInProfile({ comment, post }) {
    const [showRepliesCmt, setShowRepliesCmt] = useState(false);
 
    const handleShowRepliesCmt = () => {
@@ -53,7 +53,7 @@ function Comment({ comment, post }) {
 
    return (
       <div>
-         <div class="position-relative">
+         <div class="">
             <div class="ms-2">
                <div class="bg-light rounded-start-top-0 p-3 rounded">
                   <div class="d-flex">
@@ -139,4 +139,4 @@ function Comment({ comment, post }) {
    );
 }
 
-export default Comment;
+export default CommentInProfile;

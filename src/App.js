@@ -3,7 +3,11 @@ import { publicsRoutes } from './routes';
 import DefaultLayout from './Layout/DefaultLayout';
 import { Fragment, createContext, useState } from 'react';
 import { src } from './config';
+import io from 'socket.io-client';
+import { BASE_URL } from './config/fetchData';
+const socket = io.connect(BASE_URL + `?accessToken=${localStorage.getItem('accessToken')}`);
 
+export const socketContext = createContext();
 function App() {
    return (
       <BrowserRouter>
@@ -28,9 +32,11 @@ function App() {
                      <Route
                         path={route.path}
                         element={
-                           <Layout>
-                              <Page />
-                           </Layout>
+                           <socketContext.Provider value={socket}>
+                              <Layout>
+                                 <Page />
+                              </Layout>
+                           </socketContext.Provider>
                         }
                      ></Route>
                   );
