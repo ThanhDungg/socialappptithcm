@@ -49,7 +49,7 @@ function OrtherProfile() {
                document.getElementById('orther-address').innerText = res.data.result.user.ADDRESS;
             });
             await getData(getUserPost + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
-               setListPost(res.data.result.comments);
+               setListPost(res.data.result.newFeeds);
             });
          };
          getOrtherUser();

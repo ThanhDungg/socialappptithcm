@@ -4,11 +4,15 @@ import style from './ImgPost.module.scss';
 
 const cx = classNames.bind(style);
 
-function PostImg({ listImg1 = listImg }) {
+function PostImg({ listImg1 = listImg, post }) {
    return (
       <div class="container text-center my-3">
          <div class="row mx-auto my-auto justify-content-center">
-            <div id="recipeCarousel" class="carousel slide text-align-center" data-bs-ride="carousel">
+            <div
+               id={`recipeCarousel-${post ? post.ID : 'recipeCarousel'}`}
+               class="carousel slide text-align-center"
+               data-bs-ride="carousel"
+            >
                <div class="carousel-inner" role="listbox">
                   {listImg1.map((item) => {
                      return (
@@ -26,7 +30,7 @@ function PostImg({ listImg1 = listImg }) {
                </div>
                <a
                   class="carousel-control-prev bg-transparent w-aut"
-                  href="#recipeCarousel"
+                  href={`#recipeCarousel-${post ? post.ID : 'recipeCarousel'}`}
                   role="button"
                   data-bs-slide="prev"
                >
@@ -34,7 +38,7 @@ function PostImg({ listImg1 = listImg }) {
                </a>
                <a
                   class="carousel-control-next bg-transparent w-aut"
-                  href="#recipeCarousel"
+                  href={`#recipeCarousel-${post ? post.ID : ''}`}
                   role="button"
                   data-bs-slide="next"
                >

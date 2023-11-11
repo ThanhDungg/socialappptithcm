@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import HeaderMyProfile from '../../components/HeaderMyProfile';
-import { getData, getUser, getUserPost } from '../../config/fetchData';
+import { getData, getListUserFollowers, getListUserFollowing, getUser, getUserPost } from '../../config/fetchData';
 import StatusPost from '../StatusPost';
+import EditPost from '../EditPost';
+import Img from '../../components/Avatar';
+import { src } from '../../config';
+import { Link } from 'react-router-dom';
+import ShowUserProfile from '../../components/ShowUserProfile';
 
 function MyProfile() {
    const [bgImg, setBgImg] = useState();
@@ -9,8 +14,14 @@ function MyProfile() {
    const [listPost, setListPost] = useState([]);
    const [stateImg, setStateImg] = useState(0);
    const [post, setPost] = useState(0);
+   const [listUserFollower, setListUserFollower] = useState([]);
+   const [title, setTitle] = useState('');
+
+   const [showEdit, setShowEdit] = useState(false);
+   const [showStatusPost, setShowStatusPost] = useState(false);
 
    const handleStatusPost = (statusPost) => {
+      setShowStatusPost(true);
       setPost(statusPost);
    };
 
@@ -36,6 +47,44 @@ function MyProfile() {
       }
    };
 
+   const handleEditPost = () => {
+      setShowEdit(true);
+      setShowStatusPost(false);
+   };
+
+   const handleClose = () => {
+      setShowEdit(false);
+      setShowStatusPost(true);
+   };
+
+   const handleFocusFollower = async () => {
+      try {
+         await getData(getListUserFollowers + localStorage.getItem('id'), localStorage.getItem('accessToken')).then(
+            (res) => {
+               console.log(res);
+               setListUserFollower(res.data.result.users);
+               setTitle('Followers');
+            },
+         );
+      } catch (e) {
+         console.log(e);
+      }
+   };
+
+   const handleMouseEnterFollowing = async () => {
+      try {
+         await getData(getListUserFollowing + localStorage.getItem('id'), localStorage.getItem('accessToken')).then(
+            (res) => {
+               console.log(res);
+               setListUserFollower(res.data.result.users);
+               setTitle('Following');
+            },
+         );
+      } catch (e) {
+         console.log(e);
+      }
+   };
+
    useEffect(() => {
       try {
          const getDataUser = async () => {
@@ -52,8 +101,8 @@ function MyProfile() {
 
             await getData(getUserPost + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  console.log(res.data.result.comments);
-                  setListPost(res.data.result.comments);
+                  console.log(res);
+                  setListPost(res.data.result.newFeeds);
                },
             );
          };
@@ -66,13 +115,19 @@ function MyProfile() {
    return (
       <section class="h-100 gradient-custom-2">
          <div class="container py-5 h-100">
-            {post ? (
-               <StatusPost
-                  post={post}
-                  onClickClose={() => {
-                     setPost();
-                  }}
-               />
+            {showEdit && <EditPost handleClose={handleClose} post={post} />}
+            {showStatusPost ? (
+               post ? (
+                  <StatusPost
+                     post={post}
+                     onClickClose={() => {
+                        setPost();
+                     }}
+                     handleEditPost={handleEditPost}
+                  />
+               ) : (
+                  ''
+               )
             ) : (
                ''
             )}
@@ -91,15 +146,36 @@ function MyProfile() {
                               <p class="mb-1 h5" id="myprofile-post"></p>
                               <p class="small text-muted mb-0">Photos</p>
                            </div>
-                           <div class="px-3">
+                           <div class="px-3" style={{ cursor: 'pointer' }} onMouseEnter={handleFocusFollower}>
                               <p class="mb-1 h5" id="myprofile-followers"></p>
                               <p class="small text-muted mb-0">Followers</p>
                            </div>
-                           <div>
+                           <div style={{ cursor: 'pointer' }} onMouseEnter={handleMouseEnterFollowing}>
                               <p class="mb-1 h5" id="myprofile-following"></p>
                               <p class="small text-muted mb-0">Following</p>
                            </div>
                         </div>
+                        {listUserFollower.length == 0 ? (
+                           ''
+                        ) : (
+                           <div
+                              class="text-end position-absolute bg-secondary p-2 rounded"
+                              style={{ marginLeft: '50%' }}
+                           >
+                              <span class="me-5 text-white">{title}</span>
+                              <button
+                                 class="text-danger btn"
+                                 onClick={() => {
+                                    setListUserFollower([]);
+                                 }}
+                              >
+                                 X
+                              </button>
+                              {listUserFollower.map((item) => {
+                                 return <ShowUserProfile item={item} />;
+                              })}
+                           </div>
+                        )}
                      </div>
                      <div class="card-body p-4 text-black">
                         <div class="mb-5">

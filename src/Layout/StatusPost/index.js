@@ -4,10 +4,10 @@ import PostImg from '../../components/ImgPost';
 import * as Icon from 'react-bootstrap-icons';
 import CommentHasRepCmt from '../CommentHasRepCmt';
 import { useState } from 'react';
-import { deleteData, getComment, getData, likePost, postComment, postData } from '../../config/fetchData';
+import { deleteData, getComment, getData, likePost, postComment, postData, putStatus } from '../../config/fetchData';
 import CommentInProfile from '../../components/CommentInProfile';
 
-function StatusPost({ post, onClickClose }) {
+function StatusPost({ post, onClickClose, handleEditPost, header = true }) {
    const [show, setShow] = useState(false);
    const [showCmt, setShowCmt] = useState(false);
 
@@ -83,22 +83,37 @@ function StatusPost({ post, onClickClose }) {
       }
    };
 
-   const onClickDelete = () => {
-      console.log(post);
+   const onClickDelete = async () => {
+      alert('abc');
+      try {
+         await deleteData(putStatus + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
+         });
+      } catch (e) {
+         console.log(e);
+      }
    };
+
    return (
       <div class="">
-         <div class="card position-fixed" style={{ zIndex: 5, marginRight: '50%' }}>
+         <div class="card position-fixed" style={{ zIndex: 5, marginRight: '50%', marginTop: '-50px' }}>
             <div class="card-header border-0 text-end">
                <button class="btn btn-light text-danger" onClick={onClickClose}>
                   X
                </button>
-               <HeaderPostCmt post={post} hidePost={false} onClickDelete={onClickDelete} />
+               {header && (
+                  <HeaderPostCmt
+                     post={post}
+                     hidePost={false}
+                     onClickDelete={onClickDelete}
+                     handleEditPost={handleEditPost}
+                  />
+               )}
             </div>
             <div class="card-body d-flex">
                <div>
                   <p>{post.CAPTION}</p>
-                  {post.POST_IMAGEs.length == 0 ? '' : <PostImg listImg1={post.POST_IMAGEs} />}
+                  {post.POST_IMAGEs.length == 0 ? '' : <PostImg listImg1={post.POST_IMAGEs} post={post} />}
                   <ul class="nav nav-stack py-3 small">
                      <li class="nav-item pe-auto">
                         {isLike ? (

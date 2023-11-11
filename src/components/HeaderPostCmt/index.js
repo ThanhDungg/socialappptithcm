@@ -5,8 +5,9 @@ import { useEffect } from 'react';
 import { countDate } from '../../config';
 import DeletePost from '../DeletePost';
 
-function HeaderPostCmt({ post, hidePost = true, onClickDelete }) {
+function HeaderPostCmt({ post, hidePost = true, onClickDelete, handleEditPost }) {
    const src = 'https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien.jpeg';
+   console.log(post);
 
    useEffect(() => {
       countDate(post, `time-post-${post.ID}`);
@@ -15,7 +16,7 @@ function HeaderPostCmt({ post, hidePost = true, onClickDelete }) {
    return (
       <div class="d-flex align-items-center justify-content-between">
          <div class="d-flex">
-            <Link class="text-decoration-none" to={'/profile/0'}>
+            <Link class="text-decoration-none" to={`/profile/${post.USER.ID}`}>
                <div class="">
                   <div class="nav nav-divider btn btn-light p-2">
                      <Img src={post ? post.USER.AVATAR : ''} />
@@ -28,8 +29,10 @@ function HeaderPostCmt({ post, hidePost = true, onClickDelete }) {
                </div>
             </Link>
          </div>
-         {hidePost && <HidePostCmt />}
-         {!hidePost && <DeletePost onClick={onClickDelete} />}
+         {localStorage.getItem('id') == post.USER.ID && hidePost && <HidePostCmt />}
+         {localStorage.getItem('id') == post.USER.ID && !hidePost && (
+            <DeletePost handleDeletePost={onClickDelete} handleEditPost={handleEditPost} />
+         )}
       </div>
    );
 }

@@ -35,8 +35,11 @@ function Post({ post }) {
    const handleLikePost = async () => {
       try {
          await postData(likePost + `${post.ID}`, {}, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
             if (res.data.code == 201) {
                setIsLike(1);
+               document.getElementById(`total-like-${post.ID}`).innerText =
+                  parseInt(document.getElementById(`total-like-${post.ID}`).textContent) + 1;
             }
             console.log(res);
          });
@@ -46,8 +49,10 @@ function Post({ post }) {
    const handleUnLikePost = async () => {
       try {
          await deleteData(likePost + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
-            if (res.data.code == 201) {
+            if (res.data.code == 200) {
                setIsLike(0);
+               document.getElementById(`total-like-${post.ID}`).innerText =
+                  parseInt(document.getElementById(`total-like-${post.ID}`).textContent) - 1;
             }
             console.log(res);
          });
@@ -83,6 +88,7 @@ function Post({ post }) {
                },
                localStorage.getItem('accessToken'),
             ).then(async (res) => {
+               console.log(res);
                if (res.data.code == 201) {
                   try {
                      document.getElementById(`par-comment-input-${post.ID}`).value = '';
@@ -108,16 +114,20 @@ function Post({ post }) {
          </div>
          <div class="card-body">
             <p>{post.CAPTION}</p>
-            {post.POST_IMAGEs.length == 0 ? '' : <PostImg listImg1={post.POST_IMAGEs} />}
+            {post.POST_IMAGEs.length == 0 ? '' : <PostImg listImg1={post.POST_IMAGEs} post={post} />}
             <ul class="nav nav-stack py-3 small">
                <li class="nav-item pe-auto">
-                  {isLike ? <Icon.HeartFill onClick={handleUnLikePost} /> : <Icon.Heart onClick={handleLikePost} />}
-                  Likes ({post.LIKES})
+                  {isLike ? (
+                     <Icon.HeartFill onClick={handleUnLikePost} style={{ cursor: 'pointer' }} />
+                  ) : (
+                     <Icon.Heart onClick={handleLikePost} style={{ cursor: 'pointer' }} />
+                  )}
+                  Likes (<span id={`total-like-${post.ID}`}>{post.LIKES}</span>)
                </li>
                <li class="nav-item ms-4" style={{ cursor: 'pointer' }} onClick={handleShowCmt}>
                   Comments
                </li>
-               <li class="nav-item dropdown ms-sm-auto">
+               {/* <li class="nav-item dropdown ms-sm-auto">
                   <a
                      class="nav-link mb-0"
                      href="#"
@@ -127,7 +137,7 @@ function Post({ post }) {
                   >
                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share (3)
                   </a>
-               </li>
+               </li> */}
             </ul>
             <hr />
             <AddCmt id={`par-comment-input-${post.ID}`} onClick={handleComment} />

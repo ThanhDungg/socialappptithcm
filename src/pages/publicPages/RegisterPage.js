@@ -100,6 +100,8 @@ function RegisterPage() {
          document.getElementById('error-regis-account').innerText = 'User name is empty...';
       } else if (document.getElementById('regis-last-name').value == '') {
          document.getElementById('error-regis-account').innerText = 'Full name is empty...';
+      } else if (document.getElementById('regis-last-name').value.length < 6) {
+         document.getElementById('error-regis-account').innerText = 'Full name more 6 character...';
       } else if (document.getElementById('regis-mobile').value == '') {
          document.getElementById('error-regis-account').innerText = 'Mobile is empty...';
       } else if (document.getElementById('regis-mobile').value.length != 10) {

@@ -20,7 +20,7 @@ function HeaderMyProfile({ bgImg, chooseFileBgImg, username, fullname }) {
                      class="img-fluid img-thumbnail mt-4 mb-2"
                      style={{ width: '150px', zIndex: 1 }}
                   />
-                  <div class="text-black mb-2">{!username ? '' : username}</div>
+                  {/* <div class="text-black mb-2">{!username ? '' : username}</div> */}
                   <Link to={'/editprofile'}>
                      <button
                         type="button"
@@ -46,6 +46,7 @@ function HeaderMyProfile({ bgImg, chooseFileBgImg, username, fullname }) {
                </label> */}
                <div class="ms-3 text-white" style={{ marginTop: '130px', zIndex: 2 }}>
                   <h5>{fullname ? fullname : ''}</h5>
+                  <p>{username ? username : ''}</p>
                </div>
             </div>
          ) : (

@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import * as Icon from 'react-bootstrap-icons';
 import { BASE_URL, getData, getUser, postData, putAvatar, putData, putInfo, putPassword } from '../../config/fetchData';
+import BtnLoading from '../../components/BtnLoading';
 
 function EditProfile() {
    const [Alt, setAlt] = useState();
    const [user, setUser] = useState();
+
+   const [loadingBtnAvatar, setLoadingBtnAvatar] = useState(false);
+   const [loadingBtnInfo, setLoadingBtnInfo] = useState(false);
+   const [loadingBtnSer, setLoadingBtnSer] = useState(false);
 
    const chooseFile = (input) => {
       const file = input.target.files[0];
@@ -25,6 +30,7 @@ function EditProfile() {
          document.getElementById('error-edit-info').innerText = 'Mobile must 10 number...';
       } else {
          try {
+            setLoadingBtnInfo(true);
             await putData(
                putInfo,
                {
@@ -40,6 +46,7 @@ function EditProfile() {
                } else {
                   document.getElementById('error-edit-info').innerText = 'Change info failed...';
                }
+               setLoadingBtnInfo(false);
             });
          } catch (e) {
             document.getElementById('error-edit-info').innerText = 'Change info failed...';
@@ -61,6 +68,7 @@ function EditProfile() {
          document.getElementById('error-edit-sercurity').innerText = 'Re password not match New password.';
       } else {
          try {
+            setLoadingBtnSer(true);
             await putData(
                putPassword,
                {
@@ -76,6 +84,7 @@ function EditProfile() {
                } else {
                   alert('Success');
                }
+               setLoadingBtnSer(false);
             });
          } catch (e) {
             document.getElementById('error-edit-sercurity').innerText = 'Change password failed...';
@@ -90,6 +99,7 @@ function EditProfile() {
 
    const handleChangeAvatar = async () => {
       try {
+         setLoadingBtnAvatar(true);
          const formData = new FormData();
          formData.append('file', Alt);
 
@@ -107,8 +117,10 @@ function EditProfile() {
                console.log(json);
                if (json.code == 200) {
                   alert('Success');
+                  setLoadingBtnAvatar(false);
                } else {
                   alert('Failed');
+                  setLoadingBtnAvatar(false);
                }
             });
       } catch (e) {
@@ -170,9 +182,13 @@ function EditProfile() {
                         </label>
                         {Alt ? (
                            <div>
-                              <button class="btn btn-primary" onClick={handleChangeAvatar}>
-                                 Submit
-                              </button>
+                              {!loadingBtnAvatar ? (
+                                 <button class="btn btn-primary" onClick={handleChangeAvatar}>
+                                    Submit
+                                 </button>
+                              ) : (
+                                 <BtnLoading />
+                              )}
                            </div>
                         ) : (
                            ''
@@ -266,9 +282,13 @@ function EditProfile() {
 
                      <div class="">
                         <div class="">
-                           <button class="btn btn-primary" onClick={handleChangeInfo}>
-                              Submit
-                           </button>
+                           {!loadingBtnInfo ? (
+                              <button class="btn btn-primary" onClick={handleChangeInfo}>
+                                 Submit
+                              </button>
+                           ) : (
+                              <BtnLoading />
+                           )}
                         </div>
                      </div>
                   </div>
@@ -325,9 +345,13 @@ function EditProfile() {
 
                      <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2">
-                           <button type="submit" class="btn btn-primary" onClick={handleChangeSercu}>
-                              Submit
-                           </button>
+                           {!loadingBtnSer ? (
+                              <button type="submit" class="btn btn-primary" onClick={handleChangeSercu}>
+                                 Submit
+                              </button>
+                           ) : (
+                              <BtnLoading />
+                           )}
                            {/* <button type="reset" class="btn btn-default">
                                  Cancel
                               </button> */}

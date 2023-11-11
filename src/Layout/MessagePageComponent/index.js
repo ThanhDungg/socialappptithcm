@@ -40,7 +40,7 @@ function MessagePageComponent({ listConver }) {
    const handleSendMes = async (e) => {
       console.log(Alt);
 
-      if (document.getElementById('input-message').value == '' && !Alt) {
+      if (document.getElementById('input-message').value.trim() == '' && !Alt) {
          return;
       } else {
          try {
@@ -251,7 +251,13 @@ function MessagePageComponent({ listConver }) {
 
                               <div class="input-group">
                                  <label for="msg-input-img">
-                                    <input type="file" hidden id="msg-input-img" onChange={chooseFIle} />
+                                    <input
+                                       type="file"
+                                       hidden
+                                       id="msg-input-img"
+                                       accept="image/png, image/jpeg"
+                                       onChange={chooseFIle}
+                                    />
                                     <Icon.Image class="me-2 display-6" />
                                  </label>
                                  <input

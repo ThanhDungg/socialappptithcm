@@ -2,10 +2,12 @@ import * as Icon from 'react-bootstrap-icons';
 import PostImg from '../../components/ImgPost';
 import { useEffect, useState } from 'react';
 import { BASE_URL } from '../../config/fetchData';
+import BtnLoading from '../../components/BtnLoading';
 
 function CreatePost({ setState }) {
    const [imgInput, setImgInput] = useState([]);
    const [listImg, setListImg] = useState([]);
+   const [stateBtnPost, setStateBtnPost] = useState(1);
 
    const chooseFile = (file) => {
       const f = Object.values(file.target.files);
@@ -21,6 +23,7 @@ function CreatePost({ setState }) {
          return;
       }
       console.log(listImg);
+      setStateBtnPost(0);
       let formData = new FormData();
       await formData.append('caption', document.getElementById('input-caption').value);
       // console.log(tempImg);
@@ -43,9 +46,11 @@ function CreatePost({ setState }) {
                // window.location.reload();
                alert('Thành công');
                setState((state) => state + 1);
+               window.location.reload();
             } else {
                alert('That bai');
             }
+            setStateBtnPost(1);
          })
          .catch((e) => {
             console.log(e);
@@ -89,7 +94,7 @@ function CreatePost({ setState }) {
                   />
                </label>
             </li>
-            <li class="nav-item">
+            {/* <li class="nav-item">
                <label for="video-input" class="btn btn-light text-primary">
                   <Icon.Camera />
                   {'  '}Video
@@ -102,7 +107,7 @@ function CreatePost({ setState }) {
                      accept="video/mp4,video/x-m4v,video/*"
                   />
                </label>
-            </li>
+            </li> */}
          </ul>
          {imgInput.length != 0 ? <PostImg listImg1={imgInput} /> : ''}
          <div class="text-end">
@@ -125,9 +130,13 @@ function CreatePost({ setState }) {
                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="clear">
                         Close
                      </button>
-                     <button type="button" class="btn btn-primary" onClick={handlePost}>
-                        Post
-                     </button>
+                     {stateBtnPost ? (
+                        <button type="button" class="btn btn-primary" onClick={handlePost}>
+                           Post
+                        </button>
+                     ) : (
+                        <BtnLoading />
+                     )}
                   </div>
                </div>
             </div>

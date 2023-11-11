@@ -1,23 +1,71 @@
-function NotiDetails() {
+import { Link } from 'react-router-dom';
+
+function NotiDetails({ hidden = false, noti, handleStatusPost }) {
    return (
-      <div class="notification-list notification-list--unread btn btn-light d-flex border">
-         <div class="notification-list_content text-start">
-            <div class="notification-list_img">
-               <img src="https://i.imgur.com/zYxDCQT.jpg" alt="user" />
+      <div>
+         {!hidden ? (
+            <div class={`notification-list notification-list--unread d-flex border`}>
+               <div class="notification-list_content text-start">
+                  <Link
+                     to={noti.USER_ID == localStorage.getItem('id') ? `/myprofile` : `/profile/${noti.USER_ID}`}
+                     class="notification-list_img"
+                  >
+                     <img src={noti.USER.AVATAR} alt="" />
+                  </Link>
+                  <div
+                     class="notification-list_detail w-100"
+                     style={{ cursor: 'pointer' }}
+                     onClick={() => {
+                        if (noti.TYPE == 'follow') {
+                           return;
+                        }
+                        handleStatusPost(noti.POST_ID);
+                     }}
+                  >
+                     <p>
+                        <b>{noti.USER.USERNAME}</b> {noti.TYPE} to {noti.TYPE == 'follow' ? 'you' : 'your post'}
+                     </p>
+                     <p class="text-muted">
+                        <small>10 mins ago</small>
+                     </p>
+                  </div>
+               </div>
             </div>
-            <div class="notification-list_detail">
-               <p>
-                  <b>John Doe</b> reacted to your post
-               </p>
-               <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, dolorem.</p>
-               <p class="text-muted">
-                  <small>10 mins ago</small>
-               </p>
+         ) : (
+            <div class="list-noti-item" style={{ display: 'none' }}>
+               <div class={`notification-list notification-list--unread d-flex border`}>
+                  <div class="notification-list_content text-start">
+                     <Link
+                        to={noti.USER_ID == localStorage.getItem('id') ? `/myprofile` : `/profile/${noti.USER_ID}`}
+                        class="notification-list_img"
+                     >
+                        <img src={noti.USER.AVATAR} alt="" />
+                     </Link>
+                     <div
+                        class="notification-list_detail"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                           if (noti.TYPE == 'follow') {
+                              return;
+                           }
+                           handleStatusPost(noti.POST_ID);
+                        }}
+                     >
+                        <p>
+                           <b>{noti.USER.USERNAME}</b> {noti.TYPE} to {noti.TYPE == 'follow' ? 'you' : 'your post'}
+                        </p>
+
+                        <p class="text-muted">
+                           <small>10 mins ago</small>
+                        </p>
+                     </div>
+                  </div>
+                  {/* <div class="notification-list_feature-img text-end">
+                     <img src="https://i.imgur.com/AbZqFnR.jpg" alt="Feature image" />
+                  </div> */}
+               </div>
             </div>
-         </div>
-         <div class="notification-list_feature-img text-end">
-            <img src="https://i.imgur.com/AbZqFnR.jpg" alt="Feature image" />
-         </div>
+         )}
       </div>
    );
 }

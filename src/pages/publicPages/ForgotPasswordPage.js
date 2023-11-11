@@ -174,6 +174,7 @@ function ForgotPasswordPage() {
                         handleNextAccount={handleNextAccount}
                         onChange={onChangeOTP}
                         loadingBtn={loadingBtn}
+                        title="Forgotpassword"
                      />
                   )}
                   {formForgot && (

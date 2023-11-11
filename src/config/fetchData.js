@@ -14,6 +14,7 @@ export const verifiOTPForgotPassword = `api/verifyOTP`;
 export const putOTPChangePassword = `api/resetPassword`;
 
 export const postStatus = `api/post`;
+export const putStatus = `api/post/`;
 
 export const getConversation = `api/messege`;
 
@@ -21,11 +22,16 @@ export const likePost = `api/post/like/`;
 export const getComment = `api/post/comment/`;
 export const postComment = `api/post/comment/`;
 
+export const getStatusPost = `api/post/detail/`;
+
 export const getMessage = `api/messege/user`;
 export const getMessageConver = `api/messege`;
 
 export const getUser = `api/user/info`;
 export const getUserPost = `api/post/user`;
+
+export const getListUserFollowers = `api/user/followers/`;
+export const getListUserFollowing = `api/user/followed/`;
 
 export const getListUser = `api/user/search`;
 

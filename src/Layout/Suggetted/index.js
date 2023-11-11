@@ -20,8 +20,8 @@ function Suggested() {
             setShowSearch(true);
             await getData(getListUser + `?username=${e.target.value}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  // console.log(res);
-                  setListUser(res.data.result.user);
+                  console.log(res);
+                  setListUser(res.data.result.users);
                },
             );
          } catch (e) {

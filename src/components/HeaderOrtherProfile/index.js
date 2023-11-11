@@ -1,13 +1,40 @@
 import { useParams } from 'react-router-dom';
 import { follow, getData, unfollow } from '../../config/fetchData';
+import { useEffect, useState } from 'react';
 
-function HeaderOrtherProfile({ user }) {
+function HeaderOrtherProfile({
+   user = {
+      ADDRESS: '',
+      AVATAR: '',
+      DESCRIPTION: null,
+      FOLLOWERS: '',
+      FOLLOWING: '',
+      FULLNAME: '',
+      GENDER: '',
+      ID: '',
+      ISFOLLOWED: '',
+      MOBILE: '',
+      POSTS: '',
+      USERNAME: '',
+   },
+}) {
+   console.log(user.ISFOLLOWED);
    const { id } = useParams();
+
+   const [isFollowed, setIsFollowed] = useState(false);
+
+   useEffect(() => {
+      setIsFollowed(parseInt(user.ISFOLLOWED));
+   }, [user.ISFOLLOWED]);
+
    const handleUnFollow = async () => {
       try {
          console.log(id);
          await getData(unfollow + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
             console.log(res);
+            setIsFollowed(false);
+            document.getElementById('orther-followers').innerText =
+               parseInt(document.getElementById('orther-followers').textContent) - 1;
          });
       } catch (e) {
          console.log(e);
@@ -20,7 +47,9 @@ function HeaderOrtherProfile({ user }) {
          await getData(follow + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
             console.log(res);
             if (res.data.code == 200) {
-               user.ISFOLLOWED = 1;
+               setIsFollowed(true);
+               document.getElementById('orther-followers').innerText =
+                  parseInt(document.getElementById('orther-followers').textContent) + 1;
             }
          });
       } catch (e) {
@@ -45,7 +74,7 @@ function HeaderOrtherProfile({ user }) {
             />
             {!user ? (
                ''
-            ) : !user.ISFOLLOWED ? (
+            ) : isFollowed ? (
                <button
                   type="button"
                   class="btn btn-light border-gray border"

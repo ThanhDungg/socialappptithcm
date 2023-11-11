@@ -64,9 +64,9 @@ function LoginPage() {
 
                      <Input
                         id={'login-email'}
-                        type={'email'}
-                        title={'Number phone'}
-                        placeholder={'Enter valid number phone'}
+                        type={'text'}
+                        title={'Account'}
+                        placeholder={'Enter valid account'}
                         onChange={onChangeInput}
                         onKeyPress={(event) => {
                            // if (!/[0-9]/.test(event.key)) {

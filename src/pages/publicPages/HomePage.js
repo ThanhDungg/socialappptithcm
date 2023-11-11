@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom';
 function HomePage() {
    const [listPost, setListPost] = useState([]);
 
+   const [state, setState] = useState(0);
+
    const navigate = useNavigate();
 
    useEffect(() => {
@@ -27,7 +29,7 @@ function HomePage() {
       } else {
          navigate('/');
       }
-   }, []);
+   }, [state]);
 
    return (
       <div class="container">
@@ -51,7 +53,7 @@ function HomePage() {
 
             <div class="col-md-8 col-lg-6 vstack gap-4 w-50">
                {/* <Story /> */}
-               <CreatePost />
+               <CreatePost setState={setState} />
                {listPost.length == 0
                   ? ''
                   : listPost.map((item) => {

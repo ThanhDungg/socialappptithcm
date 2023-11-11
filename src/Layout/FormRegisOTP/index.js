@@ -1,11 +1,11 @@
 import Input from '../../components/Input';
 import LoadingBtn from '../../components/LoadingBtn';
 
-function FormRegisOTP({ handleNextAccount, onChange, loadingBtn }) {
+function FormRegisOTP({ handleNextAccount, onChange, loadingBtn, title = 'Register' }) {
    return (
       <form>
          <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0">Register</p>
+            <p class="text-center fw-bold mx-3 mb-0">{title}</p>
          </div>
 
          <Input
