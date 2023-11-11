@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { follow, getData, unfollow } from '../../config/fetchData';
+import { useNavigate, useParams } from 'react-router-dom';
+import { follow, getData, getMessage, postData, unfollow } from '../../config/fetchData';
 import { useEffect, useState } from 'react';
 
 function HeaderOrtherProfile({
@@ -19,6 +19,7 @@ function HeaderOrtherProfile({
    },
 }) {
    console.log(user.ISFOLLOWED);
+   const navigate = useNavigate();
    const { id } = useParams();
 
    const [isFollowed, setIsFollowed] = useState(false);
@@ -50,6 +51,21 @@ function HeaderOrtherProfile({
                setIsFollowed(true);
                document.getElementById('orther-followers').innerText =
                   parseInt(document.getElementById('orther-followers').textContent) + 1;
+            }
+         });
+      } catch (e) {
+         console.log(e);
+      }
+   };
+
+   const handleMoveMessagePage = async () => {
+      try {
+         await getData(getMessage + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
+            if (res.data.code == 200) {
+               navigate(`/message/${res.data.result.conversation_id}/${id}`);
+            } else {
+               alert('Chuyển trang thất bại');
             }
          });
       } catch (e) {
@@ -101,6 +117,7 @@ function HeaderOrtherProfile({
                class="btn btn-light border-gray border"
                data-mdb-ripple-color="dark"
                style={{ zIndex: 1 }}
+               onClick={handleMoveMessagePage}
             >
                Message
             </button>

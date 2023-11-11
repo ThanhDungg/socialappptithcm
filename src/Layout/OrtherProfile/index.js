@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import HeaderOrtherProfile from '../../components/HeaderOrtherProfile';
 import { useParams } from 'react-router-dom';
-import { getData, getUser, getUserPost } from '../../config/fetchData';
+import { getData, getListUserFollowers, getListUserFollowing, getUser, getUserPost } from '../../config/fetchData';
 import StatusPost from '../StatusPost';
+import ShowUserProfile from '../../components/ShowUserProfile';
 
 function OrtherProfile() {
    const [bgImg, setBgImg] = useState();
@@ -11,6 +12,9 @@ function OrtherProfile() {
    const [post, setPost] = useState(0);
    const [stateImg, setStateImg] = useState(0);
    const { id } = useParams();
+
+   const [listUserFollower, setListUserFollower] = useState([]);
+   const [title, setTitle] = useState('');
 
    const handleStatusPost = (statusPost) => {
       setPost(statusPost);
@@ -38,6 +42,30 @@ function OrtherProfile() {
       setBgImg(file.preview);
    };
 
+   const handleFocusFollower = async () => {
+      try {
+         await getData(getListUserFollowers + id, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
+            setListUserFollower(res.data.result.users);
+            setTitle('Followers');
+         });
+      } catch (e) {
+         console.log(e);
+      }
+   };
+
+   const handleMouseEnterFollowing = async () => {
+      try {
+         await getData(getListUserFollowing + id, localStorage.getItem('accessToken')).then((res) => {
+            console.log(res);
+            setListUserFollower(res.data.result.users);
+            setTitle('Following');
+         });
+      } catch (e) {
+         console.log(e);
+      }
+   };
+
    useEffect(() => {
       try {
          const getOrtherUser = async () => {
@@ -46,7 +74,10 @@ function OrtherProfile() {
                document.getElementById('orther-photos').innerText = res.data.result.user.POSTS;
                document.getElementById('orther-followers').innerText = res.data.result.user.FOLLOWERS;
                document.getElementById('orther-following').innerText = res.data.result.user.FOLLOWING;
-               document.getElementById('orther-address').innerText = res.data.result.user.ADDRESS;
+               document.getElementById('orther-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
+               document.getElementById('orther-description').innerText = res.data.result.user.DESCRIPTION
+                  ? 'Description: ' + res.data.result.user.DESCRIPTION
+                  : '';
             });
             await getData(getUserPost + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
                setListPost(res.data.result.newFeeds);
@@ -81,23 +112,43 @@ function OrtherProfile() {
                               <p class="mb-1 h5" id="orther-photos"></p>
                               <p class="small text-muted mb-0">Photos</p>
                            </div>
-                           <div class="px-3">
+                           <div class="px-3" style={{ cursor: 'pointer' }} onMouseEnter={handleFocusFollower}>
                               <p class="mb-1 h5" id="orther-followers"></p>
                               <p class="small text-muted mb-0">Followers</p>
                            </div>
-                           <div>
+                           <div style={{ cursor: 'pointer' }} onMouseEnter={handleMouseEnterFollowing}>
                               <p class="mb-1 h5" id="orther-following"></p>
                               <p class="small text-muted mb-0">Following</p>
                            </div>
+                           {listUserFollower.length == 0 ? (
+                              ''
+                           ) : (
+                              <div
+                                 class="mt-5 text-end position-absolute bg-secondary p-2 rounded"
+                                 style={{ marginLeft: '50%' }}
+                              >
+                                 <span class="me-5 text-white">{title}</span>
+                                 <button
+                                    class="text-danger btn"
+                                    onClick={() => {
+                                       setListUserFollower([]);
+                                    }}
+                                 >
+                                    X
+                                 </button>
+                                 {listUserFollower.map((item) => {
+                                    return <ShowUserProfile item={item} />;
+                                 })}
+                              </div>
+                           )}
                         </div>
                      </div>
                      <div class="card-body p-4 text-black">
                         <div class="mb-5">
                            <p class="lead fw-normal mb-1">About</p>
                            <div class="p-4" style={{ backgroundColor: '#f8f9fa' }}>
-                              <p class="font-italic mb-1" id="orther-address">
-                                 Web Developer
-                              </p>
+                              <p class="font-italic mb-1" id="orther-address"></p>
+                              <p class="font-italic mb-1" id="orther-description"></p>
                            </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-4">

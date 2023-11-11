@@ -5,6 +5,7 @@ import { follow, getData, unfollow } from '../../config/fetchData';
 
 function ShowUserProfile({ item }) {
    const [isFollow, setIsFollow] = useState(parseInt(item.ISFOLLOWED));
+   console.log(item);
 
    const handleUnFollow = async () => {
       try {
@@ -47,7 +48,9 @@ function ShowUserProfile({ item }) {
             </div>
          </Link>
          <div class="text-end">
-            {!isFollow ? (
+            {item.ID == localStorage.getItem('id') ? (
+               ''
+            ) : !isFollow ? (
                <button class="btn btn-primary ms-5 rounded-pill" onClick={handleFollow}>
                   Follow
                </button>

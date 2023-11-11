@@ -28,6 +28,10 @@ function EditProfile() {
          document.getElementById('error-edit-info').innerText = 'Mobile is empty...';
       } else if (document.getElementById('edit-mobile').value.length < 10) {
          document.getElementById('error-edit-info').innerText = 'Mobile must 10 number...';
+      } else if (document.getElementById('edit-address').value == '') {
+         document.getElementById('error-edit-info').innerText = 'Address is empty...';
+      } else if (document.getElementById('edit-descriptions').value == '') {
+         document.getElementById('error-edit-info').innerText = 'Descriptions is empty...';
       } else {
          try {
             setLoadingBtnInfo(true);
@@ -37,6 +41,9 @@ function EditProfile() {
                   username: document.getElementById('edit-username').value,
                   fullname: document.getElementById('edit-fullname').value,
                   gender: 'Male',
+                  mobile: document.getElementById('edit-mobile').value.trim(),
+                  address: document.getElementById('edit-address').value,
+                  description: document.getElementById('edit-descriptions').value,
                },
                localStorage.getItem('accessToken'),
             ).then((res) => {

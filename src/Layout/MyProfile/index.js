@@ -96,6 +96,8 @@ function MyProfile() {
                   document.getElementById('myprofile-followers').innerText = res.data.result.user.FOLLOWERS;
                   document.getElementById('myprofile-following').innerText = res.data.result.user.FOLLOWING;
                   document.getElementById('myprofile-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
+                  document.getElementById('myprofile-description').innerText =
+                     'Description: ' + res.data.result.user.DESCRIPTION;
                },
             );
 
@@ -183,6 +185,7 @@ function MyProfile() {
                            <div class="p-4" style={{ backgroundColor: '#f8f9fa' }}>
                               {/* <p class="font-italic mb-1">Web Developer</p> */}
                               <p class="font-italic mb-1" id="myprofile-address"></p>
+                              <p class="font-italic mb-1" id="myprofile-description"></p>
                               {/* <p class="font-italic mb-0">Photographer</p> */}
                            </div>
                         </div>

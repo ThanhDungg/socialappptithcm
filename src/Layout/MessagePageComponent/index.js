@@ -132,6 +132,7 @@ function MessagePageComponent({ listConver }) {
 
    useEffect(() => {
       try {
+         setPage(0);
          const getMes = async () => {
             if (idConver == 0) {
                return;
