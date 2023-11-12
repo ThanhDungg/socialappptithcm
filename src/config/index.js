@@ -11,14 +11,14 @@ export const countDate = (post, id) => {
    const toDay = new Date();
    if (toDay.getFullYear() - date.getFullYear() == 0) {
       if (toDay.getMonth() - date.getMonth() == 0) {
-         if (toDay.getDate() - date.getDate() == 0) {
-            if (toDay.getHours() - date.getHours() <= 0) {
+         if (toDay.getDate() - date.getDate() + 1 == 0) {
+            if (toDay.getHours() - date.getHours() >= 0) {
                document.getElementById(id).innerText = '1hr';
             } else {
                document.getElementById(id).innerText = toDay.getHours() - date.getHours() + 'hr';
             }
          } else {
-            document.getElementById(id).innerText = toDay.getDate() - date.getDate() + 'd';
+            document.getElementById(id).innerText = toDay.getDate() - date.getDate() + 1 + 'd';
          }
       } else {
          document.getElementById(id).innerText = toDay.getMonth() - date.getMonth() + 'm';
@@ -34,8 +34,8 @@ export const setTime = (time) => {
 
    if (toDay.getFullYear() - date.getFullYear() == 0) {
       if (toDay.getMonth() - date.getMonth() == 0) {
-         if (toDay.getDate() - date.getDate() == 0) {
-            if (toDay.getHours() - date.getHours() <= 0) {
+         if (toDay.getDate() - date.getDate() + 1 == 0) {
+            if (toDay.getHours() - date.getHours() >= 0) {
                if (toDay.getMinutes() - date.getMinutes() == 0) {
                   return '1 minutes ago';
                } else {
