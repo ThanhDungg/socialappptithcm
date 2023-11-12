@@ -2,15 +2,15 @@ import { Link } from 'react-router-dom';
 import Img from '../Avatar';
 import HidePostCmt from '../HidePostCmt';
 import { useEffect } from 'react';
-import { countDate } from '../../config';
+import { countDate, setTime } from '../../config';
 import DeletePost from '../DeletePost';
 
 function HeaderPostCmt({ post, hidePost = true, onClickDelete, handleEditPost }) {
    const src = 'https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien.jpeg';
-   console.log(post);
 
    useEffect(() => {
-      countDate(post, `time-post-${post.ID}`);
+      // countDate(post, `time-post-${post.ID}`);
+      document.getElementById(`time-post-${post.ID}`).innerText = setTime(post.createdAt);
    }, []);
 
    return (

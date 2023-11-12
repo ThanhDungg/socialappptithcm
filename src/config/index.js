@@ -32,10 +32,10 @@ export const setTime = (time) => {
    const date = new Date(time);
    const toDay = new Date();
 
-   if (toDay.getFullYear() - date.getFullYear() == 0) {
-      if (toDay.getMonth() - date.getMonth() == 0) {
-         if (toDay.getDate() - date.getDate() + 1 == 0) {
-            if (toDay.getHours() - date.getHours() >= 0) {
+   if (toDay.getFullYear() - date.getFullYear() <= 0) {
+      if (toDay.getMonth() - date.getMonth() <= 0) {
+         if (toDay.getDate() - date.getDate() + 1 <= 0) {
+            if (toDay.getHours() - date.getHours() <= 0) {
                if (toDay.getMinutes() - date.getMinutes() == 0) {
                   return '1 minutes ago';
                } else {
@@ -45,7 +45,7 @@ export const setTime = (time) => {
                return toDay.getHours() - date.getHours() + ' hr ago';
             }
          } else {
-            return toDay.getDate() - date.getDate() + ' day ago';
+            return toDay.getDate() - date.getDate() + 1 + ' day ago';
          }
       } else {
          return toDay.getMonth() - date.getMonth() + ' month ago';

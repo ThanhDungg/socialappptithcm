@@ -4,7 +4,7 @@ import MyMessage from '../../components/MyMessage';
 import OrtherMessage from '../../components/OrtherMessage';
 import './MessagePageComponent.css';
 import * as Icon from 'react-bootstrap-icons';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BASE_URL, getData, getMessage, getMessageConver, getUser, postData } from '../../config/fetchData';
 import { countDate, setTime } from '../../config';
@@ -12,6 +12,7 @@ import { useContext } from 'react';
 import { socketContext } from '../../App';
 
 function MessagePageComponent({ listConver }) {
+   const navigate = useNavigate();
    const { idConver, idUser } = useParams();
 
    const socket = useContext(socketContext);
@@ -116,6 +117,9 @@ function MessagePageComponent({ listConver }) {
             const getMesPage = async () => {
                await getData(getMessageConver + `/${idConver}?page=${page}`, localStorage.getItem('accessToken')).then(
                   (res) => {
+                     if (res.data.message == 'TokenExpiredError') {
+                        navigate('/');
+                     }
                      if (res.data.code == 200) {
                         console.log(res);
                         setListMes((list) => res.data.result.messeges.reverse().concat(list));
@@ -139,12 +143,20 @@ function MessagePageComponent({ listConver }) {
             } else {
                await getData(getUser + `/${idUser}`, localStorage.getItem('accessToken')).then((res) => {
                   // console.log(res);
-                  setUser(res.data.result.user);
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     setUser(res.data.result.user);
+                  }
                });
 
                await getData(getMessage + `/${idUser}?page=0`, localStorage.getItem('accessToken')).then((res) => {
                   if (res.data.code == 200) {
-                     setListMes(res.data.result.messeges.reverse());
+                     if (res.data.message == 'TokenExpiredError') {
+                        navigate('/');
+                     } else {
+                        setListMes(res.data.result.messeges.reverse());
+                     }
                   }
                });
             }

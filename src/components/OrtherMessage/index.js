@@ -6,7 +6,7 @@ function OrtherMessage({ msg, time, img, name, type }) {
                {/* <img src={`${img}`} class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" /> */}
                {/* <div class="text-muted small text-nowrap mt-2">{time}</div> */}
             </div>
-            <div class="flex-shrink-1 bg-white rounded py-2 px-3 ml-3">
+            <div class="flex-shrink-1 bg-white rounded py-2 px-3 ml-3" style={{ maxWidth: '400px' }}>
                <div class="font-weight-bold mb-1">{/* <strong>{name}</strong> */}</div>
                {type == 'text' ? msg : <img style={{ width: '200px' }} src={msg} />}
             </div>

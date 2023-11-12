@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { countDate } from '../../config';
+import { countDate, setTime } from '../../config';
 
 function NotiDetails({ hidden = false, noti, handleStatusPost }) {
    useEffect(() => {
-      countDate(noti, `noti-${noti.ID}`);
+      // countDate(noti, `noti-${noti.ID}`);
+      document.getElementById(`noti-${noti.ID}`).innerText = setTime(noti.createdAt);
    }, []);
    return (
       <div>
@@ -61,7 +62,7 @@ function NotiDetails({ hidden = false, noti, handleStatusPost }) {
                         </p>
 
                         <p class="text-muted">
-                           <small>10 mins ago</small>
+                           <small id={`noti-${noti.ID}`}>10 mins ago</small>
                         </p>
                      </div>
                   </div>
