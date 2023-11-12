@@ -29,28 +29,30 @@ export const countDate = (post, id) => {
 };
 
 export const setTime = (time) => {
-   const date = new Date(time);
+   const tempDate = require('moment-timezone');
+
+   const date = tempDate(time).tz('Etc/GMT');
    const toDay = new Date();
 
-   if (toDay.getFullYear() - date.getFullYear() <= 0) {
-      if (toDay.getMonth() - date.getMonth() <= 0) {
-         if (toDay.getDate() - date.getDate() + 1 <= 0) {
-            if (toDay.getHours() - date.getHours() <= 0) {
-               if (toDay.getMinutes() - date.getMinutes() == 0) {
+   if (toDay.getFullYear() - date.year() <= 0) {
+      if (toDay.getMonth() - date.month() <= 0) {
+         if (toDay.getDate() - date.date() <= 0) {
+            if (toDay.getHours() - date.hours() <= 0) {
+               if (toDay.getMinutes() - date.minutes() == 0) {
                   return '1 minutes ago';
                } else {
-                  return toDay.getMinutes() - date.getMinutes() + ' minutes ago';
+                  return toDay.getMinutes() - date.minutes() + ' minutes ago';
                }
             } else {
-               return toDay.getHours() - date.getHours() + ' hr ago';
+               return toDay.getHours() - date.hours() + ' hr ago';
             }
          } else {
-            return toDay.getDate() - date.getDate() + 1 + ' day ago';
+            return toDay.getDate() - date.date() + 1 + ' day ago';
          }
       } else {
-         return toDay.getMonth() - date.getMonth() + ' month ago';
+         return toDay.getMonth() - date.month() + ' month ago';
       }
    } else {
-      return date.getFullYear() + ' years ago';
+      return date.year() + ' years ago';
    }
 };
