@@ -11,20 +11,20 @@ function MessagePage() {
    const [listConversation, setlistConversation] = useState([]);
 
    useEffect(() => {
-      const getConversationList = async () => {
-         await getData(getConversation, localStorage.getItem('accessToken')).then((res) => {
-            if (res.data.message == 'TokenExpiredError') {
-               navigate('/');
-            } else {
-               console.log(res);
-               if (res.data.code == 200) {
-                  setlistConversation(res.data.result.conversations);
-               }
-            }
-         });
-      };
       if (localStorage.getItem('accessToken')) {
          try {
+            const getConversationList = async () => {
+               await getData(getConversation, localStorage.getItem('accessToken')).then((res) => {
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     if (res.data.code == 200) {
+                        setlistConversation(res.data.result.conversations);
+                     }
+                  }
+               });
+            };
             getConversationList();
          } catch (e) {
             console.log(e);

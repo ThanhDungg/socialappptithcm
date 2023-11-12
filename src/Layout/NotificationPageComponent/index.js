@@ -49,19 +49,23 @@ function NotificationPageComponent() {
 
    useEffect(() => {
       try {
-         const fetchData = async () => {
-            await getData(getNoti, localStorage.getItem('accessToken')).then((res) => {
-               if (res.data.message == 'TokenExpiredError') {
-                  navigate('/');
-               } else {
-                  console.log(res);
-                  if (res.data.code == 201) {
-                     setListNoti(res.data.result.notifications);
+         if (localStorage.getItem('accessToken')) {
+            const fetchData = async () => {
+               await getData(getNoti, localStorage.getItem('accessToken')).then((res) => {
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     if (res.data.code == 201) {
+                        setListNoti(res.data.result.notifications);
+                     }
                   }
-               }
-            });
-         };
-         fetchData();
+               });
+            };
+            fetchData();
+         } else {
+            navigate('/');
+         }
       } catch (e) {
          console.log(e);
       }

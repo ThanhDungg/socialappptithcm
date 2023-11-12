@@ -114,9 +114,12 @@ function MessagePageComponent({ listConver }) {
    useEffect(() => {
       if (idUser != 0) {
          try {
-            const getMesPage = async () => {
-               await getData(getMessageConver + `/${idConver}?page=${page}`, localStorage.getItem('accessToken')).then(
-                  (res) => {
+            if (localStorage.getItem('accessToken')) {
+               const getMesPage = async () => {
+                  await getData(
+                     getMessageConver + `/${idConver}?page=${page}`,
+                     localStorage.getItem('accessToken'),
+                  ).then((res) => {
                      if (res.data.message == 'TokenExpiredError') {
                         navigate('/');
                      }
@@ -124,10 +127,12 @@ function MessagePageComponent({ listConver }) {
                         console.log(res);
                         setListMes((list) => res.data.result.messeges.reverse().concat(list));
                      }
-                  },
-               );
-            };
-            getMesPage();
+                  });
+               };
+               getMesPage();
+            } else {
+               navigate('/');
+            }
          } catch (e) {
             console.log(e);
          }
@@ -137,31 +142,35 @@ function MessagePageComponent({ listConver }) {
    useEffect(() => {
       try {
          setPage(0);
-         const getMes = async () => {
-            if (idConver == 0) {
-               return;
-            } else {
-               await getData(getUser + `/${idUser}`, localStorage.getItem('accessToken')).then((res) => {
-                  // console.log(res);
-                  if (res.data.message == 'TokenExpiredError') {
-                     navigate('/');
-                  } else {
-                     setUser(res.data.result.user);
-                  }
-               });
-
-               await getData(getMessage + `/${idUser}?page=0`, localStorage.getItem('accessToken')).then((res) => {
-                  if (res.data.code == 200) {
+         if (localStorage.getItem('accessToken')) {
+            const getMes = async () => {
+               if (idConver == 0) {
+                  return;
+               } else {
+                  await getData(getUser + `/${idUser}`, localStorage.getItem('accessToken')).then((res) => {
+                     // console.log(res);
                      if (res.data.message == 'TokenExpiredError') {
                         navigate('/');
                      } else {
-                        setListMes(res.data.result.messeges.reverse());
+                        setUser(res.data.result.user);
                      }
-                  }
-               });
-            }
-         };
-         getMes();
+                  });
+
+                  await getData(getMessage + `/${idUser}?page=0`, localStorage.getItem('accessToken')).then((res) => {
+                     if (res.data.code == 200) {
+                        if (res.data.message == 'TokenExpiredError') {
+                           navigate('/');
+                        } else {
+                           setListMes(res.data.result.messeges.reverse());
+                        }
+                     }
+                  });
+               }
+            };
+            getMes();
+         } else {
+            navigate('/');
+         }
       } catch (e) {
          console.log(e);
       }

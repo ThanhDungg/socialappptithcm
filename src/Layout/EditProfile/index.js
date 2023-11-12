@@ -140,30 +140,34 @@ function EditProfile() {
 
    useEffect(() => {
       try {
-         const getDataUser = async () => {
-            await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
-               (res) => {
-                  if (res.data.message == 'TokenExpiredError') {
-                     navigate('/');
-                  } else {
-                     console.log(res);
-                     setUser(res.data.result.user);
-                     document.getElementById('edit-username').value = res.data.result.user.USERNAME;
-                     document.getElementById('edit-fullname').value = res.data.result.user.FULLNAME;
-                     document.getElementById('edit-address').value = res.data.result.user.ADDRESS;
-                     document.getElementById('edit-mobile').value = res.data.result.user.MOBILE;
-                     document.getElementById('edit-descriptions').value = res.data.result.user.DESCRIPTION;
-                  }
-               },
-            );
+         if (localStorage.getItem('accessToken')) {
+            const getDataUser = async () => {
+               await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
+                  (res) => {
+                     if (res.data.message == 'TokenExpiredError') {
+                        navigate('/');
+                     } else {
+                        console.log(res);
+                        setUser(res.data.result.user);
+                        document.getElementById('edit-username').value = res.data.result.user.USERNAME;
+                        document.getElementById('edit-fullname').value = res.data.result.user.FULLNAME;
+                        document.getElementById('edit-address').value = res.data.result.user.ADDRESS;
+                        document.getElementById('edit-mobile').value = res.data.result.user.MOBILE;
+                        document.getElementById('edit-descriptions').value = res.data.result.user.DESCRIPTION;
+                     }
+                  },
+               );
 
-            // await getData(getUserPost + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
-            //    (res) => {
-            //       console.log(res);
-            //    },
-            // );
-         };
-         getDataUser();
+               // await getData(getUserPost + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
+               //    (res) => {
+               //       console.log(res);
+               //    },
+               // );
+            };
+            getDataUser();
+         } else {
+            navigate('/');
+         }
       } catch (e) {
          console.log(e);
       }

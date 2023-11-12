@@ -69,30 +69,34 @@ function OrtherProfile() {
 
    useEffect(() => {
       try {
-         const getOrtherUser = async () => {
-            await getData(getUser + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
-               if (res.data.message == 'TokenExpiredError') {
-                  navigate('/');
-               } else {
-                  setUser(res.data.result.user);
-                  document.getElementById('orther-photos').innerText = res.data.result.user.POSTS;
-                  document.getElementById('orther-followers').innerText = res.data.result.user.FOLLOWERS;
-                  document.getElementById('orther-following').innerText = res.data.result.user.FOLLOWING;
-                  document.getElementById('orther-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
-                  document.getElementById('orther-description').innerText = res.data.result.user.DESCRIPTION
-                     ? 'Description: ' + res.data.result.user.DESCRIPTION
-                     : '';
-               }
-            });
-            await getData(getUserPost + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
-               if (res.data.message == 'TokenExpiredError') {
-                  navigate('/');
-               } else {
-                  setListPost(res.data.result.newFeeds);
-               }
-            });
-         };
-         getOrtherUser();
+         if (localStorage.getItem('accessToken')) {
+            const getOrtherUser = async () => {
+               await getData(getUser + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     setUser(res.data.result.user);
+                     document.getElementById('orther-photos').innerText = res.data.result.user.POSTS;
+                     document.getElementById('orther-followers').innerText = res.data.result.user.FOLLOWERS;
+                     document.getElementById('orther-following').innerText = res.data.result.user.FOLLOWING;
+                     document.getElementById('orther-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
+                     document.getElementById('orther-description').innerText = res.data.result.user.DESCRIPTION
+                        ? 'Description: ' + res.data.result.user.DESCRIPTION
+                        : '';
+                  }
+               });
+               await getData(getUserPost + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     setListPost(res.data.result.newFeeds);
+                  }
+               });
+            };
+            getOrtherUser();
+         } else {
+            navigate('/');
+         }
       } catch (e) {
          console.log(e);
       }

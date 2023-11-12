@@ -44,20 +44,24 @@ function SideBar() {
 
    useEffect(() => {
       try {
-         const getDataUser = async () => {
-            await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
-               (res) => {
-                  if (res.data.message == 'TokenExpiredError') {
-                     navigate('/');
-                  } else {
-                     console.log(res);
-                     document.getElementById('sidebar-fullname').innerText = res.data.result.user.FULLNAME;
-                     document.getElementById('sidebar-img').src = res.data.result.user.AVATAR;
-                  }
-               },
-            );
-         };
-         getDataUser();
+         if (!localStorage.getItem('accessToken')) {
+            navigate('/');
+         } else {
+            const getDataUser = async () => {
+               await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
+                  (res) => {
+                     if (res.data.message == 'TokenExpiredError') {
+                        navigate('/');
+                     } else {
+                        console.log(res);
+                        document.getElementById('sidebar-fullname').innerText = res.data.result.user.FULLNAME;
+                        document.getElementById('sidebar-img').src = res.data.result.user.AVATAR;
+                     }
+                  },
+               );
+            };
+            getDataUser();
+         }
       } catch (e) {
          console.log(e);
       }
