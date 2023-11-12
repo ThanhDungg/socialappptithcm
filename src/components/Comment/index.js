@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Img from '../Avatar';
-import { countDate, src } from '../../config';
+import { countDate, setTime, src } from '../../config';
 import { useEffect, useState } from 'react';
 import AddCmt from '../AddCmt';
 import { postComment, postData } from '../../config/fetchData';
@@ -38,19 +38,20 @@ function Comment({ comment, post }) {
 
    useEffect(() => {
       try {
-         if (comment.COMMENTs.length > 0) {
-            comment.COMMENTs.map((cmt) => {
-               {
-                  countDate(cmt, `chil-comment-${cmt.ID}`);
-               }
-            });
-         }
+         // if (comment.COMMENTs.length > 0) {
+         //    comment.COMMENTs.map((cmt) => {
+         //       {
+         //          countDate(cmt, `chil-comment-${cmt.ID}`);
+         //       }
+         //    });
+         // }
       } catch (e) {}
    }, [showRepliesCmt]);
 
    useEffect(() => {
       try {
-         countDate(comment, `par-comment-${comment.ID}`);
+         // countDate(comment, `par-comment-${comment.ID}`);
+         // document.getElementById(`par-comment-${comment.ID}`).innerText = setTime(comment.createdAt);
       } catch (e) {}
    }, []);
 
@@ -66,7 +67,9 @@ function Comment({ comment, post }) {
                            <div class="align-items-center ms-2 text-primary">
                               {comment ? comment.USER.FULLNAME : ''}
                            </div>
-                           <small class="ms-2" id={`par-comment-${comment.ID}`}></small>
+                           <small class="ms-2" id={`par-comment-${comment.ID}`}>
+                              {setTime(comment.createdAt)}
+                           </small>
                         </Link>
                      </div>
                   </div>
@@ -116,7 +119,9 @@ function Comment({ comment, post }) {
                                        <div class="align-items-center ms-2 text-primary">
                                           {cmt ? cmt.USER.FULLNAME : ''}
                                        </div>
-                                       <small class="ms-2" id={`chil-comment-${cmt.ID}`}></small>
+                                       <small class="ms-2" id={`chil-comment-${cmt.ID}`}>
+                                          {setTime(cmt.createdAt)}
+                                       </small>
                                     </Link>
                                  </div>
                               </div>
