@@ -173,37 +173,39 @@ function MessagePageComponent({ listConver }) {
                         </div>
                      </div>
 
-                     {listConver.length == 0
-                        ? ''
-                        : listConver.map((conver) => {
-                             return (
-                                <Link
-                                   to={`/message/${conver.CONVERSATION.ID}/${conver.CONVERSATION.USER_CONVERSATIONs[0].USER_ID}`}
-                                   class="list-group-item list-group-item-action border-0 mb-2"
-                                >
-                                   <div class="badge bg-success float-right">5</div>
-                                   <div class="d-flex align-items-start  btn btn-light text-start">
-                                      <img
-                                         src={conver ? conver.CONVERSATION.USER_CONVERSATIONs[0].USER.AVATAR : ''}
-                                         class="rounded-circle mr-1"
-                                         alt="Vanessa Tucker"
-                                         width="40"
-                                         height="40"
-                                      />
+                     <div style={{ maxHeight: '600px', overflowY: 'scroll' }}>
+                        {listConver.length == 0
+                           ? ''
+                           : listConver.map((conver) => {
+                                return (
+                                   <Link
+                                      to={`/message/${conver.CONVERSATION.ID}/${conver.CONVERSATION.USER_CONVERSATIONs[0].USER_ID}`}
+                                      class="list-group-item list-group-item-action border-0 mb-2"
+                                   >
+                                      <div class="badge bg-success float-right">5</div>
+                                      <div class="d-flex align-items-start  btn btn-light text-start">
+                                         <img
+                                            src={conver ? conver.CONVERSATION.USER_CONVERSATIONs[0].USER.AVATAR : ''}
+                                            class="rounded-circle mr-1"
+                                            alt="Vanessa Tucker"
+                                            width="40"
+                                            height="40"
+                                         />
 
-                                      <div class="flex-grow-1 ml-3">
-                                         <strong>
-                                            {!conver ? '' : conver.CONVERSATION.USER_CONVERSATIONs[0].USER.FULLNAME}
-                                         </strong>
+                                         <div class="flex-grow-1 ml-3">
+                                            <strong>
+                                               {!conver ? '' : conver.CONVERSATION.USER_CONVERSATIONs[0].USER.FULLNAME}
+                                            </strong>
 
-                                         <div class="small">
-                                            <span class="fas fa-circle chat-online">online</span>
+                                            <div class="small">
+                                               <span class="fas fa-circle chat-online">online</span>
+                                            </div>
                                          </div>
                                       </div>
-                                   </div>
-                                </Link>
-                             );
-                          })}
+                                   </Link>
+                                );
+                             })}
+                     </div>
 
                      <hr class="d-block d-lg-none mt-1 mb-0" />
                   </div>

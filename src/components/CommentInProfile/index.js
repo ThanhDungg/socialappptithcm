@@ -25,6 +25,9 @@ function CommentInProfile({ comment, post }) {
                },
                localStorage.getItem('accessToken'),
             ).then((res) => {
+               if (res.data.code == 201) {
+                  document.getElementById(`rep-comment-input-${comment.ID}`).value = '';
+               }
                console.log(res);
             });
          } catch (e) {
@@ -76,12 +79,12 @@ function CommentInProfile({ comment, post }) {
                         Like (3)
                      </a>
                   </li> */}
-                  <li class="nav-item">
+                  {/* <li class="nav-item">
                      <a class="nav-link" href="#!">
                         {' '}
                         Reply
                      </a>
-                  </li>
+                  </li> */}
                   <li class="nav-item">
                      <a class="nav-link" style={{ cursor: 'pointer' }} onClick={handleShowRepliesCmt}>
                         {' '}

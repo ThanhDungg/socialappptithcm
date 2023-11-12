@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { countDate } from '../../config';
 
 function NotiDetails({ hidden = false, noti, handleStatusPost }) {
+   useEffect(() => {
+      countDate(noti, `noti-${noti.ID}`);
+   }, []);
    return (
       <div>
          {!hidden ? (
@@ -26,7 +31,7 @@ function NotiDetails({ hidden = false, noti, handleStatusPost }) {
                         <b>{noti.USER.USERNAME}</b> {noti.TYPE} to {noti.TYPE == 'follow' ? 'you' : 'your post'}
                      </p>
                      <p class="text-muted">
-                        <small>10 mins ago</small>
+                        <small id={`noti-${noti.ID}`}></small>
                      </p>
                   </div>
                </div>
