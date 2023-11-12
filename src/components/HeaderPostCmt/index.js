@@ -16,7 +16,10 @@ function HeaderPostCmt({ post, hidePost = true, onClickDelete, handleEditPost })
    return (
       <div class="d-flex align-items-center justify-content-between">
          <div class="d-flex">
-            <Link class="text-decoration-none" to={`/profile/${post.USER.ID}`}>
+            <Link
+               class="text-decoration-none"
+               to={post.USER.ID == localStorage.getItem('id') ? `/myprofile` : `/profile/${post.USER.ID}`}
+            >
                <div class="">
                   <div class="nav nav-divider btn btn-light p-2">
                      <Img src={post ? post.USER.AVATAR : ''} />

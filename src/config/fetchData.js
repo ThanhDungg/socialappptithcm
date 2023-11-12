@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const BASE_URL = 'https://socialappnew.onrender.com/';
+export const BASE_URL = 'https://fb5e05e385cc4d7184cb530fd053f973.serveo.net/';
 export const login_Url = `api/signIn`;
 
 export const home_Url = `api/home`;
