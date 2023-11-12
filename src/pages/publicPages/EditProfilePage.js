@@ -2,12 +2,23 @@ import { useEffect } from 'react';
 import EditProfile from '../../Layout/EditProfile';
 import SideBar from '../../Layout/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import { getData, getUser } from '../../config/fetchData';
 
 function EditProfilePage() {
    const navigate = useNavigate();
 
    useEffect(() => {
       if (localStorage.getItem('accessToken')) {
+         const getDataUser = async () => {
+            await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
+               (res) => {
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  }
+               },
+            );
+         };
+         getDataUser();
       } else {
          navigate('/');
       }

@@ -5,10 +5,11 @@ import StatusPost from '../StatusPost';
 import EditPost from '../EditPost';
 import Img from '../../components/Avatar';
 import { src } from '../../config';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ShowUserProfile from '../../components/ShowUserProfile';
 
 function MyProfile() {
+   const navigate = useNavigate();
    const [bgImg, setBgImg] = useState();
    const [user, setUser] = useState();
    const [listPost, setListPost] = useState([]);
@@ -90,21 +91,30 @@ function MyProfile() {
          const getDataUser = async () => {
             await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  console.log(res);
-                  setUser(res.data.result.user);
-                  document.getElementById('myprofile-post').innerText = res.data.result.user.POSTS;
-                  document.getElementById('myprofile-followers').innerText = res.data.result.user.FOLLOWERS;
-                  document.getElementById('myprofile-following').innerText = res.data.result.user.FOLLOWING;
-                  document.getElementById('myprofile-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
-                  document.getElementById('myprofile-description').innerText =
-                     'Description: ' + res.data.result.user.DESCRIPTION;
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     setUser(res.data.result.user);
+                     document.getElementById('myprofile-post').innerText = res.data.result.user.POSTS;
+                     document.getElementById('myprofile-followers').innerText = res.data.result.user.FOLLOWERS;
+                     document.getElementById('myprofile-following').innerText = res.data.result.user.FOLLOWING;
+                     document.getElementById('myprofile-address').innerText =
+                        'Address: ' + res.data.result.user.ADDRESS;
+                     document.getElementById('myprofile-description').innerText =
+                        'Description: ' + res.data.result.user.DESCRIPTION;
+                  }
                },
             );
 
             await getData(getUserPost + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  console.log(res);
-                  setListPost(res.data.result.newFeeds);
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     setListPost(res.data.result.newFeeds);
+                  }
                },
             );
          };

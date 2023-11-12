@@ -20,8 +20,12 @@ function HomePage() {
          const getDataHome = async () => {
             try {
                await getData(home_Url, localStorage.getItem('accessToken')).then((res) => {
-                  setListPost(res.data.result.newFeeds);
-                  console.log(res.data.result);
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     setListPost(res.data.result.newFeeds);
+                  }
+                  console.log(res);
                });
             } catch (e) {}
          };

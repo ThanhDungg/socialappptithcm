@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import * as Icon from 'react-bootstrap-icons';
 import { BASE_URL, getData, getUser, postData, putAvatar, putData, putInfo, putPassword } from '../../config/fetchData';
 import BtnLoading from '../../components/BtnLoading';
+import { useNavigate } from 'react-router-dom';
 
 function EditProfile() {
+   const navigate = useNavigate();
    const [Alt, setAlt] = useState();
    const [user, setUser] = useState();
 
@@ -141,13 +143,17 @@ function EditProfile() {
          const getDataUser = async () => {
             await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  console.log(res);
-                  setUser(res.data.result.user);
-                  document.getElementById('edit-username').value = res.data.result.user.USERNAME;
-                  document.getElementById('edit-fullname').value = res.data.result.user.FULLNAME;
-                  document.getElementById('edit-address').value = res.data.result.user.ADDRESS;
-                  document.getElementById('edit-mobile').value = res.data.result.user.MOBILE;
-                  document.getElementById('edit-descriptions').value = res.data.result.user.DESCRIPTION;
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     setUser(res.data.result.user);
+                     document.getElementById('edit-username').value = res.data.result.user.USERNAME;
+                     document.getElementById('edit-fullname').value = res.data.result.user.FULLNAME;
+                     document.getElementById('edit-address').value = res.data.result.user.ADDRESS;
+                     document.getElementById('edit-mobile').value = res.data.result.user.MOBILE;
+                     document.getElementById('edit-descriptions').value = res.data.result.user.DESCRIPTION;
+                  }
                },
             );
 

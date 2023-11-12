@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import HeaderOrtherProfile from '../../components/HeaderOrtherProfile';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getData, getListUserFollowers, getListUserFollowing, getUser, getUserPost } from '../../config/fetchData';
 import StatusPost from '../StatusPost';
 import ShowUserProfile from '../../components/ShowUserProfile';
 
 function OrtherProfile() {
+   const navigate = useNavigate();
    const [bgImg, setBgImg] = useState();
    const [user, setUser] = useState();
    const [listPost, setListPost] = useState([]);
@@ -70,17 +71,25 @@ function OrtherProfile() {
       try {
          const getOrtherUser = async () => {
             await getData(getUser + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
-               setUser(res.data.result.user);
-               document.getElementById('orther-photos').innerText = res.data.result.user.POSTS;
-               document.getElementById('orther-followers').innerText = res.data.result.user.FOLLOWERS;
-               document.getElementById('orther-following').innerText = res.data.result.user.FOLLOWING;
-               document.getElementById('orther-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
-               document.getElementById('orther-description').innerText = res.data.result.user.DESCRIPTION
-                  ? 'Description: ' + res.data.result.user.DESCRIPTION
-                  : '';
+               if (res.data.message == 'TokenExpiredError') {
+                  navigate('/');
+               } else {
+                  setUser(res.data.result.user);
+                  document.getElementById('orther-photos').innerText = res.data.result.user.POSTS;
+                  document.getElementById('orther-followers').innerText = res.data.result.user.FOLLOWERS;
+                  document.getElementById('orther-following').innerText = res.data.result.user.FOLLOWING;
+                  document.getElementById('orther-address').innerText = 'Address: ' + res.data.result.user.ADDRESS;
+                  document.getElementById('orther-description').innerText = res.data.result.user.DESCRIPTION
+                     ? 'Description: ' + res.data.result.user.DESCRIPTION
+                     : '';
+               }
             });
             await getData(getUserPost + `/${id}`, localStorage.getItem('accessToken')).then((res) => {
-               setListPost(res.data.result.newFeeds);
+               if (res.data.message == 'TokenExpiredError') {
+                  navigate('/');
+               } else {
+                  setListPost(res.data.result.newFeeds);
+               }
             });
          };
          getOrtherUser();

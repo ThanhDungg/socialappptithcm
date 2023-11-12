@@ -28,8 +28,8 @@ function LoginPage() {
                '',
             ).then(async (res) => {
                if (res.data.code == 202) {
-                  localStorage.setItem('accessToken', res.data.result.token);
-                  localStorage.setItem('id', res.data.result.user.ID);
+                  await localStorage.setItem('accessToken', res.data.result.token);
+                  await localStorage.setItem('id', res.data.result.user.ID);
                   await navigate('/home');
                   await window.location.reload();
                } else {

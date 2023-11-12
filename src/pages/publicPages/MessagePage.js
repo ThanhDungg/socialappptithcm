@@ -13,9 +13,13 @@ function MessagePage() {
    useEffect(() => {
       const getConversationList = async () => {
          await getData(getConversation, localStorage.getItem('accessToken')).then((res) => {
-            console.log(res);
-            if (res.data.code == 200) {
-               setlistConversation(res.data.result.conversations);
+            if (res.data.message == 'TokenExpiredError') {
+               navigate('/');
+            } else {
+               console.log(res);
+               if (res.data.code == 200) {
+                  setlistConversation(res.data.result.conversations);
+               }
             }
          });
       };

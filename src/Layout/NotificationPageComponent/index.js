@@ -3,8 +3,10 @@ import NotiDetails from '../../components/NotiDetails';
 import './NotificationPageComponent.css';
 import { getData, getNoti, getStatusPost } from '../../config/fetchData';
 import StatusPost from '../StatusPost';
+import { useNavigate } from 'react-router-dom';
 
 function NotificationPageComponent() {
+   const navigate = useNavigate();
    const [listNoti, setListNoti] = useState([]);
    const [statusPost, setStatusPost] = useState();
 
@@ -49,9 +51,13 @@ function NotificationPageComponent() {
       try {
          const fetchData = async () => {
             await getData(getNoti, localStorage.getItem('accessToken')).then((res) => {
-               console.log(res);
-               if (res.data.code == 201) {
-                  setListNoti(res.data.result.notifications);
+               if (res.data.message == 'TokenExpiredError') {
+                  navigate('/');
+               } else {
+                  console.log(res);
+                  if (res.data.code == 201) {
+                     setListNoti(res.data.result.notifications);
+                  }
                }
             });
          };

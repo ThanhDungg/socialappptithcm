@@ -47,9 +47,13 @@ function SideBar() {
          const getDataUser = async () => {
             await getData(getUser + `/${localStorage.getItem('id')}`, localStorage.getItem('accessToken')).then(
                (res) => {
-                  console.log(res);
-                  document.getElementById('sidebar-fullname').innerText = res.data.result.user.FULLNAME;
-                  document.getElementById('sidebar-img').src = res.data.result.user.AVATAR;
+                  if (res.data.message == 'TokenExpiredError') {
+                     navigate('/');
+                  } else {
+                     console.log(res);
+                     document.getElementById('sidebar-fullname').innerText = res.data.result.user.FULLNAME;
+                     document.getElementById('sidebar-img').src = res.data.result.user.AVATAR;
+                  }
                },
             );
          };
