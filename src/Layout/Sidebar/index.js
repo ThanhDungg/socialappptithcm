@@ -98,7 +98,7 @@ function SideBar() {
                               <span>Message</span>
                            </Link>
                         </li>
-                        <li
+                        {/* <li
                            class="nav-item  btn btn-light text-start"
                            data-bs-target="#exampleModal"
                            data-bs-toggle="modal"
@@ -107,7 +107,7 @@ function SideBar() {
                               <FontAwesomeIcon className={cx('icon')} icon={faPlus} />
                               <span>Create Story</span>
                            </Link>
-                        </li>
+                        </li> */}
                         <li class="nav-item  btn btn-light text-start" data-bs-target="#logout" data-bs-toggle="modal">
                            <Link class="nav-link text-muted">
                               <FontAwesomeIcon className={cx('icon')} icon={faGear} />
