@@ -84,13 +84,17 @@ function StatusPost({ post, onClickClose, handleEditPost, header = true }) {
    };
 
    const onClickDelete = async () => {
-      alert('abc');
-      try {
-         await deleteData(putStatus + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
-            console.log(res);
-         });
-      } catch (e) {
-         console.log(e);
+      if (!window.confirm('Do you want delete this post?')) {
+         return;
+      } else {
+         try {
+            await deleteData(putStatus + `${post.ID}`, localStorage.getItem('accessToken')).then((res) => {
+               window.location.reload();
+               console.log(res);
+            });
+         } catch (e) {
+            console.log(e);
+         }
       }
    };
 
