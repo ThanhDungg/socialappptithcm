@@ -47,7 +47,7 @@ export const setTime = (time) => {
                return toDay.getHours() - date.hours() + ' hr ago';
             }
          } else {
-            return toDay.getDate() - date.date() + 1 + ' day ago';
+            return toDay.getDate() - date.date() + ' day ago';
          }
       } else {
          return toDay.getMonth() - date.month() + ' month ago';
